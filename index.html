@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Business Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Smooth Scrolling Enable */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e293b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 20px 20px 80px; /* Extra bottom padding for nav space */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Fixed Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px;
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            z-index: 1000;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .bottom-nav a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+
+        .bottom-nav a:hover, .bottom-nav a:active {
+            color: var(--primary-color);
+        }
+
+        .bottom-nav span {
+            font-size: 0.65rem;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+            color: white;
+        }
+
+        .logo {
+            width: 80px; height: 80px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center; justify-content: center;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Standard Section Styling */
+        .section-title { padding: 30px 20px 10px; font-weight: 600; border-top: 1px solid #f1f5f9; margin-top: 10px; }
+        
+        .slider-container {
+            overflow-x: auto;
+            display: flex;
+            padding: 0 20px 20px;
+            gap: 15px;
+        }
+
+        .service-card {
+            min-width: 220px;
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        /* Payment Tabs */
+        .tabs { display: flex; padding: 0 20px; gap: 10px; }
+        .tab-btn {
+            flex: 1; padding: 10px; border: none;
+            background: #e2e8f0; border-radius: 8px;
+            cursor: pointer; font-weight: 600;
+        }
+        .tab-btn.active { background: var(--primary-color); color: white; }
+        .tab-content { padding: 20px; display: none; text-align: center; }
+        .tab-content.active { display: block; }
+
+        /* Form & Map */
+        .contact-form { padding: 20px; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        .btn-submit { width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; }
+        .map-container { padding: 20px; }
+        iframe { width: 100%; height: 200px; border-radius: 12px; border: none; }
+        .btn-direction { display: block; text-align: center; background: var(--secondary-color); color: white; text-decoration: none; padding: 12px; margin-top: 10px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+<nav class="bottom-nav">
+    <a href="#home"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="#services"><i class="fas fa-th-large"></i><span>Services</span></a>
+    <a href="#payment"><i class="fas fa-wallet"></i><span>Pay</span></a>
+    <a href="#contact"><i class="fas fa-paper-plane"></i><span>Contact</span></a>
+</nav>
+
+<div class="container">
+    <header class="header" id="home">
+        <div class="logo">LOGO</div>
+        <h1>Company Name</h1>
+        <p>Creative Digital Solutions Provider</p>
+    </header>
+
+    <h3 class="section-title" id="services">Our Services</h3>
+    <div class="slider-container">
+        <div class="service-card">
+            <h4>Web Design</h4>
+            <p>Clean and modern UI/UX designs.</p>
+        </div>
+        <div class="service-card">
+            <h4>Digital Marketing</h4>
+            <p>Grow your brand visibility online.</p>
+        </div>
+        <div class="service-card">
+            <h4>Consulting</h4>
+            <p>Expert business strategy sessions.</p>
+        </div>
+    </div>
+
+    <h3 class="section-title" id="payment">Payment Options</h3>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'qr')">QR Code</button>
+        <button class="tab-btn" onclick="openTab(event, 'bank')">Bank Info</button>
+    </div>
+
+    <div id="qr" class="tab-content active">
+        <div style="background: #eee; padding: 20px; display: inline-block; border-radius: 10px;">
+            <i class="fas fa-qrcode fa-5x"></i>
+        </div>
+        <p style="margin-top:10px; font-size: 0.9rem;">Scan to pay instantly</p>
+    </div>
+
+    <div id="bank" class="tab-content">
+        <p><strong>Bank:</strong> Global Bank Corp</p>
+        <p><strong>A/C:</strong> 1234 5678 9012</p>
+        <p><strong>IFSC:</strong> GBC000123</p>
+    </div>
+
+    <h3 class="section-title" id="contact">Get In Touch</h3>
+    <form class="contact-form">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="How can we help?" rows="3"></textarea>
+        <button type="submit" class="btn-submit">Send Message</button>
+    </form>
+
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509364!2d144.95373531531615!3d-37.81627973597854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sau!4v1611811111111!5m2!1sen!2sau" allowfullscreen="" loading="lazy"></iframe>
+        <a href="https://goo.gl/maps/example" class="btn-direction">Open in Google Maps</a>
+    </div>
+</div>
+
+<script>
+    // Tab switching logic
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+
+</body>
+</html>
