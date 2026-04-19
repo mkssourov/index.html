@@ -1,223 +1,2792 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Business Card</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <style>
-        /* Smooth Scrolling Enable */
-        html {
-            scroll-behavior: smooth;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MKS Sourov — Fullstack Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060610;
+    --bg2: #0d0d1f;
+    --bg3: #111128;
+    --surface: rgba(255,255,255,0.04);
+    --surface2: rgba(255,255,255,0.07);
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0eeff;
+    --text2: #a09cb8;
+    --text3: #5e5a78;
+    --purple: #7c5cfc;
+    --purple2: #9b80ff;
+    --teal: #00d4aa;
+    --teal2: #00ffcc;
+    --pink: #ff6b9d;
+    --amber: #ffb347;
+    --grad: linear-gradient(135deg, #7c5cfc, #00d4aa);
+    --grad2: linear-gradient(135deg, #7c5cfc 0%, #c850c0 50%, #00d4aa 100%);
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
 
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e293b;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #334155;
-            --nav-bg: rgba(255, 255, 255, 0.85);
-        }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: none;
+  }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            padding: 20px 20px 80px; /* Extra bottom padding for nav space */
-        }
+  /* ══════════════════════════════════════
+     INTRO ANIMATION SCREEN
+  ══════════════════════════════════════ */
+  #intro-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #020208;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+  }
 
-        .container {
-            width: 100%;
-            max-width: 450px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
+  #intro-screen.done {
+    pointer-events: none;
+    animation: intro-exit 0.8s cubic-bezier(0.76,0,0.24,1) 0.1s forwards;
+  }
 
-        /* Fixed Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background: var(--nav-bg);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-around;
-            padding: 12px;
-            border-radius: 50px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-            z-index: 1000;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
+  @keyframes intro-exit {
+    0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
+    100% { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); opacity: 0; }
+  }
 
-        .bottom-nav a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            font-size: 1.2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: color 0.3s ease;
-        }
+  .intro-bg-lines {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0.15;
+  }
 
-        .bottom-nav a:hover, .bottom-nav a:active {
-            color: var(--primary-color);
-        }
+  .intro-bg-lines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(124,92,252,0.5) 50px),
+      repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(124,92,252,0.5) 50px);
+    background-size: 50px 50px;
+    animation: grid-move 3s linear infinite;
+  }
 
-        .bottom-nav span {
-            font-size: 0.65rem;
-            margin-top: 4px;
-            font-weight: 600;
-        }
+  @keyframes grid-move {
+    from { transform: translateY(0); }
+    to { transform: translateY(50px); }
+  }
 
-        /* Header Section */
-        .header {
-            text-align: center;
-            padding: 50px 20px;
-            background: linear-gradient(135deg, var(--primary-color), #3b82f6);
-            color: white;
-        }
+  .intro-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+  }
+  .intro-orb1 { width: 600px; height: 600px; background: rgba(124,92,252,0.25); top: -200px; left: -200px; animation: intro-orb-drift 4s ease-in-out infinite alternate; }
+  .intro-orb2 { width: 500px; height: 500px; background: rgba(0,212,170,0.18); bottom: -150px; right: -150px; animation: intro-orb-drift 4s 1s ease-in-out infinite alternate; }
 
-        .logo {
-            width: 80px; height: 80px;
-            background: white;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center; justify-content: center;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
+  @keyframes intro-orb-drift {
+    from { transform: translate(0,0); }
+    to { transform: translate(30px, 20px); }
+  }
 
-        /* Standard Section Styling */
-        .section-title { padding: 30px 20px 10px; font-weight: 600; border-top: 1px solid #f1f5f9; margin-top: 10px; }
-        
-        .slider-container {
-            overflow-x: auto;
-            display: flex;
-            padding: 0 20px 20px;
-            gap: 15px;
-        }
+  .intro-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
 
-        .service-card {
-            min-width: 220px;
-            background: #f1f5f9;
-            padding: 20px;
-            border-radius: 12px;
-        }
+  .intro-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c5cfc, #00d4aa);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(124,92,252,0.7), 0 0 80px rgba(124,92,252,0.3);
+    animation: intro-logo-in 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+    position: relative;
+  }
 
-        /* Payment Tabs */
-        .tabs { display: flex; padding: 0 20px; gap: 10px; }
-        .tab-btn {
-            flex: 1; padding: 10px; border: none;
-            background: #e2e8f0; border-radius: 8px;
-            cursor: pointer; font-weight: 600;
-        }
-        .tab-btn.active { background: var(--primary-color); color: white; }
-        .tab-content { padding: 20px; display: none; text-align: center; }
-        .tab-content.active { display: block; }
+  .intro-logo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 
-        /* Form & Map */
-        .contact-form { padding: 20px; }
-        input, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; }
-        .btn-submit { width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; }
-        .map-container { padding: 20px; }
-        iframe { width: 100%; height: 200px; border-radius: 12px; border: none; }
-        .btn-direction { display: block; text-align: center; background: var(--secondary-color); color: white; text-decoration: none; padding: 12px; margin-top: 10px; border-radius: 8px; }
-    </style>
+  .intro-logo::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #7c5cfc, #00d4aa, #c850c0, #7c5cfc);
+    z-index: -1;
+    animation: spin-slow 2s linear infinite;
+  }
+
+  @keyframes intro-logo-in {
+    from { opacity: 0; transform: scale(0.3) rotate(-180deg); }
+    to { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+
+  .intro-name {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -3px;
+    line-height: 1;
+    animation: intro-name-in 0.7s 0.3s cubic-bezier(0.34,1.2,0.64,1) both;
+  }
+
+  .intro-name span {
+    background: var(--grad2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @keyframes intro-name-in {
+    from { opacity: 0; transform: translateY(40px); filter: blur(8px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+
+  .intro-tagline {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--teal);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: intro-tag-in 0.7s 0.5s ease both;
+  }
+
+  @keyframes intro-tag-in {
+    from { opacity: 0; letter-spacing: 0.5em; }
+    to { opacity: 1; letter-spacing: 0.2em; }
+  }
+
+  .intro-loader {
+    width: 200px;
+    height: 2px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 1rem;
+    animation: intro-loader-appear 0.5s 0.7s ease both;
+  }
+
+  @keyframes intro-loader-appear {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .intro-loader-fill {
+    height: 100%;
+    background: var(--grad);
+    border-radius: 99px;
+    width: 0%;
+    animation: intro-load 1.8s 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    box-shadow: 0 0 12px rgba(124,92,252,0.8);
+  }
+
+  @keyframes intro-load {
+    0% { width: 0%; }
+    30% { width: 35%; }
+    60% { width: 70%; }
+    85% { width: 88%; }
+    100% { width: 100%; }
+  }
+
+  .intro-pct {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    animation: intro-loader-appear 0.5s 0.7s ease both;
+  }
+
+  /* Scanline effect */
+  #intro-screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  .cursor {
+    position: fixed;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--purple);
+    pointer-events: none;
+    z-index: 999999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: normal;
+    box-shadow: 0 0 10px rgba(124,92,252,0.8);
+    left: -100px; top: -100px;
+  }
+  .cursor-trail {
+    position: fixed;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(124,92,252,0.6);
+    pointer-events: none;
+    z-index: 999998;
+    transform: translate(-50%, -50%);
+    transition: left 0.1s ease, top 0.1s ease, width 0.3s, height 0.3s;
+    left: -100px; top: -100px;
+  }
+  body:has(a:hover) .cursor, body:has(button:hover) .cursor { width: 22px; height: 22px; background: var(--teal); box-shadow: 0 0 14px rgba(0,212,170,0.9); }
+  body:has(a:hover) .cursor-trail, body:has(button:hover) .cursor-trail { width: 60px; height: 60px; border-color: rgba(0,212,170,0.5); }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* ── MESH BG ORBS ── */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    animation: orb-float 12s ease-in-out infinite alternate;
+  }
+  .orb1 { width: 600px; height: 600px; background: rgba(124,92,252,0.14); top: -200px; left: -200px; animation-delay: 0s; }
+  .orb2 { width: 500px; height: 500px; background: rgba(0,212,170,0.10); bottom: 100px; right: -150px; animation-delay: -4s; }
+  .orb3 { width: 400px; height: 400px; background: rgba(200,80,192,0.09); top: 40%; left: 40%; animation-delay: -8s; }
+  .orb4 { width: 350px; height: 350px; background: rgba(255,107,157,0.07); top: 60%; left: 10%; animation-delay: -6s; }
+
+  @keyframes orb-float {
+    from { transform: translate(0,0) scale(1); }
+    to { transform: translate(30px, 20px) scale(1.08); }
+  }
+
+  /* ── FLOATING PARTICLES ── */
+  .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: particle-float linear infinite;
+    opacity: 0;
+  }
+  @keyframes particle-float {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-100px) scale(1); opacity: 0; }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(6,6,16,0.75);
+    border-bottom: 0.5px solid var(--border);
+    transition: background 0.3s;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo-img {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c5cfc, #00d4aa);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(124,92,252,0.5), 0 0 30px rgba(124,92,252,0.2);
+    animation: logo-glow 3s ease-in-out infinite alternate;
+    flex-shrink: 0;
+  }
+  .nav-logo-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+  @keyframes logo-glow {
+    from { box-shadow: 0 0 15px rgba(124,92,252,0.5), 0 0 30px rgba(124,92,252,0.2); }
+    to { box-shadow: 0 0 25px rgba(0,212,170,0.6), 0 0 50px rgba(0,212,170,0.25); }
+  }
+
+  .nav-logo-text {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 800;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--grad);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 99px;
+    background: var(--grad);
+    color: #fff;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 20px rgba(124,92,252,0.35);
+  }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 0 30px rgba(124,92,252,0.55); }
+
+  .nav-admin-btn {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 0.4rem 0.9rem;
+    border-radius: 99px;
+    background: transparent;
+    border: 0.5px solid rgba(0,212,170,0.3);
+    color: var(--teal);
+    text-decoration: none;
+    transition: all 0.2s;
+    font-family: var(--font-mono);
+    letter-spacing: 0.05em;
+    cursor: none;
+    margin-right: 0.5rem;
+  }
+  .nav-admin-btn:hover { background: rgba(0,212,170,0.1); border-color: var(--teal); }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: none; }
+  .hamburger span { width: 22px; height: 1.5px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+
+  /* ── SECTION BASE ── */
+  section { position: relative; z-index: 1; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+  /* ── HERO ── */
+  #hero { min-height: 100vh; display: flex; align-items: stretch; padding: 7rem 0 0; overflow: hidden; }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    align-items: end;
+    gap: 2rem;
+    width: 100%;
+  }
+  .hero-left { padding-bottom: 4rem; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--teal);
+    border: 0.5px solid rgba(0,212,170,0.3);
+    padding: 0.4rem 0.9rem;
+    border-radius: 99px;
+    margin-bottom: 1.5rem;
+    animation: fade-up 0.6s ease both;
+    box-shadow: 0 0 20px rgba(0,212,170,0.1);
+  }
+  .hero-badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); animation: pulse 2s infinite; box-shadow: 0 0 8px var(--teal); }
+
+  @keyframes pulse { 0%,100%{opacity:1; transform:scale(1);} 50%{opacity:0.4; transform:scale(0.8);} }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 0.5rem;
+    animation: fade-up 0.6s 0.1s ease both;
+  }
+  .hero-name span { background: var(--grad2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 600;
+    color: var(--text2);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.3px;
+    animation: fade-up 0.6s 0.2s ease both;
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--text2);
+    max-width: 520px;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    animation: fade-up 0.6s 0.3s ease both;
+  }
+  .hero-desc strong { color: var(--text); font-weight: 500; }
+
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; animation: fade-up 0.6s 0.4s ease both; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 0.85rem 1.8rem; border-radius: 99px;
+    background: var(--grad); color: #fff;
+    font-family: var(--font-display); font-size: 14px; font-weight: 700;
+    text-decoration: none; letter-spacing: 0.02em;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(124,92,252,0.4); cursor: none;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(124,92,252,0.7); }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 0.85rem 1.8rem; border-radius: 99px;
+    background: transparent; border: 0.5px solid var(--border2);
+    color: var(--text); font-family: var(--font-display); font-size: 14px; font-weight: 600;
+    text-decoration: none; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; cursor: none;
+  }
+  .btn-secondary:hover { border-color: var(--purple2); background: var(--surface); box-shadow: 0 0 20px rgba(124,92,252,0.15); }
+
+  .hero-stats {
+    display: flex; gap: 2rem; margin-top: 3rem;
+    padding-top: 2rem; border-top: 0.5px solid var(--border);
+    animation: fade-up 0.6s 0.5s ease both;
+  }
+  .stat-item { text-align: left; }
+  .stat-num {
+    font-family: var(--font-display); font-size: 2rem; font-weight: 800;
+    background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; line-height: 1; filter: drop-shadow(0 0 8px rgba(124,92,252,0.4));
+  }
+  .stat-label { font-size: 12px; color: var(--text3); margin-top: 3px; font-weight: 400; }
+
+  .hero-avatar-wrapper { width: 420px; flex-shrink: 0; animation: fade-up 0.6s 0.3s ease both; position: relative; align-self: stretch; display: flex; align-items: flex-end; }
+  .hero-avatar-ring { position: relative; width: 100%; height: 100%; min-height: 520px; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+  .hero-avatar-ring::before { display: none; }
+  .hero-avatar-ring::after { display: none; }
+  .hero-avatar-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; border: none; border-radius: 0; position: relative; z-index: 1; filter: drop-shadow(0 20px 60px rgba(0,0,0,0.7)); animation: hero-float 4s ease-in-out infinite; -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%); mask-image: linear-gradient(to bottom, black 70%, transparent 100%); }
+  @keyframes hero-float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-18px); } }
+  .hero-img-badge { position: absolute; bottom: 60px; left: -10px; background: rgba(13,13,31,0.92); border: 0.5px solid var(--border2); border-radius: 14px; padding: 0.8rem 1.1rem; z-index: 10; backdrop-filter: blur(12px); display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(0,212,170,0.1); }
+  .hero-img-badge-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 8px var(--teal); animation: pulse 2s infinite; flex-shrink: 0; }
+  .hero-img-badge-text { font-family: var(--font-mono); font-size: 11px; color: var(--text2); line-height: 1.4; }
+  .hero-img-badge-text strong { display: block; color: var(--text); font-size: 12px; }
+  .hero-img-tag { position: absolute; top: 80px; right: 10px; background: var(--grad); border-radius: 10px; padding: 0.5rem 0.85rem; z-index: 10; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: #fff; letter-spacing: 0.08em; box-shadow: 0 4px 20px rgba(124,92,252,0.5); }
+  .orbit-dot { display: none; }
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Social Bar */
+  .social-bar { display: flex; align-items: center; gap: 0.75rem; margin-top: 2rem; animation: fade-up 0.6s 0.6s ease both; }
+  .social-bar-label { font-size: 11px; color: var(--text3); font-family: var(--font-mono); letter-spacing: 0.08em; }
+  .social-link { width: 36px; height: 36px; border-radius: 10px; background: var(--surface); border: 0.5px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text2); transition: all 0.2s; cursor: none; }
+  .social-link svg { width: 15px; height: 15px; }
+  .social-link:hover { background: var(--surface2); border-color: var(--border2); transform: translateY(-2px); }
+  .sl-github:hover { color: #fff; }
+  .sl-linkedin:hover { color: #0077b5; }
+  .sl-twitter:hover { color: #1da1f2; }
+  .sl-facebook:hover { color: #1877f2; }
+  .sl-youtube:hover { color: #ff0000; }
+  .sl-instagram:hover { color: #e4405f; }
+
+  /* ── ABOUT ── */
+  #about { padding: 7rem 0; }
+  .section-tag { font-family: var(--font-mono); font-size: 12px; color: var(--teal); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
+  .section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 1.5rem; }
+  .section-title span { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-text p { color: var(--text2); margin-bottom: 1.2rem; font-size: 16px; line-height: 1.8; }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .about-visual { position: relative; height: 460px; }
+  .about-img-main { position: absolute; top: 0; left: 0; width: 260px; height: 340px; border-radius: 24px; overflow: hidden; border: 0.5px solid var(--border2); box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(124,92,252,0.15); }
+  .about-photo-frame { position: absolute; top: 0; right: 0; width: 200px; height: 260px; border-radius: 20px; overflow: hidden; border: 1px solid var(--border2); box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,170,0.12); }
+  .about-photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  .about-code-card { position: absolute; bottom: 20px; left: 20px; background: rgba(13,13,31,0.95); border: 0.5px solid rgba(124,92,252,0.3); border-radius: 14px; padding: 1rem 1.2rem; z-index: 10; backdrop-filter: blur(16px); box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 20px rgba(124,92,252,0.1); min-width: 170px; }
+  .about-code-card-title { font-family: var(--font-mono); font-size: 9px; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; opacity: 0.8; }
+  .about-code-line { font-family: var(--font-mono); font-size: 11px; line-height: 1.8; }
+  .about-code-line .kw { color: var(--purple2); }
+  .about-code-line .fn { color: var(--teal); }
+  .about-code-line .str { color: var(--amber); }
+  .about-code-line .cm { color: var(--text3); }
+  .about-img-badge { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg2); border: 0.5px solid var(--border2); border-radius: 16px; padding: 1rem 1.25rem; text-align: center; z-index: 10; box-shadow: 0 10px 40px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+  .about-img-badge-num { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+  .about-img-badge-label { font-size: 10px; color: var(--text3); font-family: var(--font-mono); }
+  .about-values { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+  .value-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 1.25rem; transition: border-color 0.3s, background 0.3s, box-shadow 0.3s, transform 0.3s; cursor: default; }
+  .value-card:hover { border-color: var(--purple); background: var(--surface2); box-shadow: 0 0 25px rgba(124,92,252,0.15), inset 0 0 20px rgba(124,92,252,0.05); transform: translateY(-3px); }
+  .value-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+  .value-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; margin-bottom: 0.3rem; }
+  .value-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+
+  /* ── SERVICES ── */
+  #services { padding: 7rem 0; }
+  .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3.5rem; }
+  .service-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 20px; padding: 0; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; cursor: default; }
+  .service-img { width: 100%; height: 180px; overflow: hidden; position: relative; }
+  .service-img-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; transition: transform 0.4s; background-size: cover; background-position: center; }
+  .service-img-inner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, rgba(6,6,16,0.92)); pointer-events: none; }
+  .service-img-inner.has-bg-img::before { content: ''; position: absolute; inset: 0; z-index: 0; }
+  .service-card:hover .service-img-inner { transform: scale(1.05); }
+  .service-img-bg1 { background: linear-gradient(135deg, #1a0f3e, #0f2a3e); }
+  .service-img-bg2 { background: linear-gradient(135deg, #0f2a1a, #0f1a2a); }
+  .service-img-bg3 { background: linear-gradient(135deg, #2a0f1e, #1a0f2a); }
+  .service-img-bg4 { background: linear-gradient(135deg, #2a1a0f, #1a2a0f); }
+  /* Custom gradient bg presets */
+  .grad-purple-teal { background: linear-gradient(135deg, #1a0f3e 0%, #0f2a3e 50%, #003d2e 100%); }
+  .grad-pink-purple { background: linear-gradient(135deg, #2a0f2e 0%, #1a0f3e 50%, #0f0a2e 100%); }
+  .grad-teal-blue  { background: linear-gradient(135deg, #003d2e 0%, #0a1a3e 50%, #050a28 100%); }
+  .grad-amber-pink { background: linear-gradient(135deg, #2a1a0a 0%, #2a0f1e 50%, #1a0f2e 100%); }
+  .grad-blue-cyan  { background: linear-gradient(135deg, #050a28 0%, #0a1a3e 50%, #003d3e 100%); }
+  .grad-green-blue { background: linear-gradient(135deg, #0a2e1a 0%, #0a1a3e 50%, #050a28 100%); }
+
+  /* Project bg presets */
+  .project-img { position: relative; height: 220px; overflow: hidden; }
+  .project-img-inner-wrap { position: relative; width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 0.4s; }
+  .project-img-inner-wrap::after { content:''; position:absolute; inset:0; pointer-events:none; }
+  .project-card:hover .project-img-inner-wrap { transform: scale(1.04); }
+  .service-svg { width: 80px; height: 80px; position: relative; z-index: 1; filter: drop-shadow(0 0 20px currentColor); }
+  .service-body { padding: 1.75rem; }
+  .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--grad); opacity: 0; transition: opacity 0.3s; z-index: 10; }
+  .service-card:hover { transform: translateY(-6px); border-color: var(--border2); box-shadow: 0 25px 60px rgba(0,0,0,0.4), 0 0 40px rgba(124,92,252,0.1); }
+  .service-card:hover::before { opacity: 1; }
+  .service-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.3px; }
+  .service-desc { font-size: 14px; color: var(--text2); line-height: 1.75; margin-bottom: 1.25rem; }
+  .service-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-family: var(--font-mono); font-size: 11px; color: var(--text2); border: 0.5px solid var(--border); border-radius: 6px; padding: 0.2rem 0.6rem; }
+
+  /* ── PROJECTS ── */
+  #projects { padding: 7rem 0; }
+  .projects-grid { display: flex; flex-direction: column; gap: 2rem; margin-top: 3.5rem; }
+  .project-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 24px; overflow: hidden; transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; }
+  .project-card:hover { border-color: var(--border2); box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 50px rgba(124,92,252,0.08); transform: translateY(-4px); }
+  .project-img-bg1 { background: linear-gradient(135deg, #0d0628, #051428); }
+  .project-img-bg2 { background: linear-gradient(135deg, #041a12, #040e28); }
+  .project-img-bg3 { background: linear-gradient(135deg, #1a0420, #0a0418); }
+  .project-img-inner { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .project-img-emoji { font-size: 3rem; position: relative; z-index: 1; filter: drop-shadow(0 0 20px rgba(255,255,255,0.3)); }
+  .project-tech-overlay { position: absolute; bottom: 1rem; left: 1rem; z-index: 2; }
+  .project-body { display: grid; grid-template-columns: 1fr auto; gap: 2rem; padding: 2rem; }
+  .project-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .project-num { font-family: var(--font-mono); font-size: 11px; color: var(--text3); }
+  .project-type { font-family: var(--font-mono); font-size: 11px; color: var(--teal); border: 0.5px solid rgba(0,212,170,0.2); padding: 0.15rem 0.6rem; border-radius: 99px; }
+  .project-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 0.75rem; }
+  .project-desc { font-size: 14px; color: var(--text2); line-height: 1.75; margin-bottom: 1.5rem; }
+  .case-study { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+  .cs-item-label { font-family: var(--font-mono); font-size: 9px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.35rem; }
+  .cs-item-val { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .cs-item-val.highlight { color: var(--teal); }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .project-links { display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-end; justify-content: flex-end; }
+  .link-btn { font-family: var(--font-display); font-size: 13px; font-weight: 700; padding: 0.6rem 1.2rem; border-radius: 10px; text-decoration: none; white-space: nowrap; transition: all 0.2s; border: 0.5px solid var(--border); color: var(--text2); background: transparent; cursor: none; }
+  .link-btn:hover { border-color: var(--border2); background: var(--surface2); color: var(--text); }
+  .link-btn.primary { background: var(--grad); color: #fff; border: none; box-shadow: 0 0 20px rgba(124,92,252,0.3); }
+  .link-btn.primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* ── SKILLS ── */
+  #skills { padding: 7rem 0; }
+  .skills-cats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3.5rem; }
+  .skill-cat { background: var(--surface); border: 0.5px solid var(--border); border-radius: 20px; padding: 2rem; transition: border-color 0.3s, box-shadow 0.3s; }
+  .skill-cat:hover { border-color: var(--border2); box-shadow: 0 0 30px rgba(124,92,252,0.08); }
+  .skill-cat-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; margin-bottom: 1.5rem; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .skill-list { display: flex; flex-direction: column; gap: 1rem; }
+  .skill-row { display: flex; align-items: center; gap: 0.75rem; }
+  .skill-name { font-size: 13px; color: var(--text2); width: 130px; flex-shrink: 0; }
+  .skill-bar-bg { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
+  .skill-bar-fill { height: 100%; background: var(--grad); border-radius: 99px; width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 8px rgba(124,92,252,0.5); }
+  .skill-pct { font-family: var(--font-mono); font-size: 11px; color: var(--text3); width: 32px; text-align: right; }
+
+  /* Tech Strip */
+  .tech-strip { margin-top: 3.5rem; overflow: hidden; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+  .tech-strip-inner { display: flex; gap: 0; animation: tech-scroll 30s linear infinite; width: max-content; }
+  .tech-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 13px; color: var(--text2); padding: 0.85rem 1.5rem; border: 0.5px solid var(--border); border-radius: 10px; white-space: nowrap; margin-right: 0.75rem; background: var(--surface); }
+  @keyframes tech-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── SOCIAL SECTION ── */
+  #social-section { padding: 7rem 0; }
+  .socials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; }
+  .social-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; gap: 1rem; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; cursor: none; text-decoration: none; }
+  .social-card:hover { transform: translateY(-6px); }
+  .sc-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+  .sc-name { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--text); }
+  .sc-handle { font-family: var(--font-mono); font-size: 12px; color: var(--text3); }
+  .sc-desc { font-size: 13px; color: var(--text2); line-height: 1.6; flex: 1; }
+  .sc-follow { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 13px; font-weight: 700; color: #fff; padding: 0.5rem 1rem; border-radius: 8px; transition: opacity 0.2s; width: fit-content; }
+  .sc-follow:hover { opacity: 0.85; }
+
+  /* ── CONTACT ── */
+  #contact { padding: 7rem 0; }
+  .cta-wrapper { background: var(--surface); border: 0.5px solid var(--border); border-radius: 28px; padding: 4rem; position: relative; overflow: hidden; text-align: center; }
+  .cta-wrapper::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(124,92,252,0.15), transparent 60%); }
+  .cta-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 1rem; position: relative; }
+  .cta-sub { font-size: 17px; color: var(--text2); max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.7; position: relative; }
+  .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+  .contact-form { max-width: 560px; margin: 2.5rem auto 0; position: relative; display: grid; gap: 1rem; }
+  .contact-input { background: rgba(255,255,255,0.04); border: 0.5px solid var(--border); border-radius: 12px; padding: 0.9rem 1.2rem; font-family: var(--font-body); font-size: 14px; color: var(--text); width: 100%; transition: border-color 0.2s, box-shadow 0.2s; }
+  .contact-input:focus { outline: none; border-color: var(--purple); box-shadow: 0 0 20px rgba(124,92,252,0.15); }
+  .contact-input::placeholder { color: var(--text3); }
+  textarea.contact-input { resize: vertical; min-height: 120px; }
+  .contact-submit { background: var(--grad); color: #fff; border: none; border-radius: 12px; padding: 0.9rem 2rem; font-family: var(--font-display); font-size: 15px; font-weight: 700; cursor: none; transition: opacity 0.2s, transform 0.2s; box-shadow: 0 0 30px rgba(124,92,252,0.4); }
+  .contact-submit:hover { opacity: 0.88; transform: translateY(-2px); }
+  .contact-info { display: flex; align-items: center; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; position: relative; }
+  .contact-info-item { display: flex; align-items: center; gap: 0.5rem; font-size: 13px; color: var(--text2); }
+  .contact-info-item a { color: var(--text2); text-decoration: none; transition: color 0.2s; }
+  .contact-info-item a:hover { color: var(--teal); }
+
+  /* ── REVIEWS ── */
+  #reviews { padding: 7rem 0; }
+  .reviews-layout { display: grid; grid-template-columns: 340px 1fr; gap: 3rem; margin-top: 3.5rem; align-items: start; }
+  .reviews-left-col { display: flex; flex-direction: column; gap: 0; position: sticky; top: 88px; }
+  .rating-summary { background: var(--surface); border: 0.5px solid var(--border); border-radius: 20px; padding: 2rem; }
+  .avg-rating-num { font-family: var(--font-display); font-size: 4rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+  .avg-stars-row { display: flex; gap: 3px; margin: 0.5rem 0; }
+  .star { font-size: 1.2rem; }
+  .total-reviews-label { font-size: 12px; color: var(--text3); font-family: var(--font-mono); }
+  .rating-bars { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.25rem; }
+  .rating-bar-row { display: flex; align-items: center; gap: 0.75rem; font-size: 12px; color: var(--text2); }
+  .rb-label { width: 14px; text-align: right; }
+  .rb-bg { flex: 1; height: 5px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
+  .rb-fill { height: 100%; background: var(--grad); border-radius: 99px; transition: width 0.6s; }
+  .rb-cnt { width: 20px; font-family: var(--font-mono); font-size: 11px; color: var(--text3); }
+  .review-form { background: var(--surface); border: 0.5px solid var(--border); border-radius: 20px; padding: 1.75rem; margin-top: 2rem; }
+  .review-form-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; margin-bottom: 1rem; }
+  .review-input { background: rgba(255,255,255,0.04); border: 0.5px solid var(--border); border-radius: 10px; padding: 0.75rem 1rem; font-family: var(--font-body); font-size: 13px; color: var(--text); width: 100%; margin-bottom: 0.75rem; }
+  .review-input:focus { outline: none; border-color: var(--purple); }
+  .review-input::placeholder { color: var(--text3); }
+  textarea.review-input { resize: vertical; min-height: 80px; }
+  .star-picker { display: flex; gap: 0.4rem; margin-bottom: 1rem; border-radius: 10px; }
+  .sp-star { font-size: 1.5rem; cursor: none; transition: transform 0.15s; filter: grayscale(1) opacity(0.4); }
+  .sp-star.hovered, .sp-star.active { filter: grayscale(0) opacity(1); transform: scale(1.15); }
+  .submit-review-btn { background: var(--grad); color: #fff; border: none; border-radius: 10px; padding: 0.75rem 1.5rem; font-family: var(--font-display); font-size: 13px; font-weight: 700; cursor: none; transition: opacity 0.2s, transform 0.2s; box-shadow: 0 0 20px rgba(124,92,252,0.3); }
+  .submit-review-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .reviews-list-wrap { display: flex; flex-direction: column; gap: 1rem; }
+  .reviews-pagination { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem; justify-content: center; flex-wrap: wrap; }
+  .rev-page-btn { background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; font-family: var(--font-mono); font-size: 12px; color: var(--text2); cursor: pointer; transition: all 0.2s; }
+  .rev-page-btn:hover { border-color: var(--purple); color: var(--purple2); }
+  .rev-page-btn.active { background: var(--grad); border: none; color: #fff; }
+  .rev-page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .review-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 1.5rem; transition: border-color 0.2s; }
+  .review-card:hover { border-color: var(--border2); }
+  .review-card-header { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 0.75rem; }
+  .review-avatar { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 13px; font-weight: 800; color: #fff; flex-shrink: 0; }
+  /* Admin review cards */
+  .admin-review-item { background: rgba(255,255,255,0.02); border: 0.5px solid var(--border); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem; }
+  .admin-review-item:last-child { margin-bottom: 0; }
+  .admin-review-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; gap: 0.75rem; }
+  .admin-review-meta { display: flex; align-items: center; gap: 0.75rem; flex: 1; }
+  .admin-review-avatar { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0; }
+  .admin-review-info { flex: 1; }
+  .admin-review-name-input { background: rgba(255,255,255,0.04); border: 0.5px solid var(--border); border-radius: 8px; padding: 0.4rem 0.7rem; font-family: var(--font-body); font-size: 13px; color: var(--text); font-weight: 700; width: 100%; transition: border-color 0.2s; }
+  .admin-review-name-input:focus { outline: none; border-color: var(--purple); }
+  .admin-review-date { font-size: 10px; color: var(--text3); font-family: var(--font-mono); margin-top: 2px; }
+  .admin-review-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+  .admin-review-save-btn { background: rgba(0,212,170,0.12); color: var(--teal); border: 0.5px solid rgba(0,212,170,0.25); border-radius: 8px; padding: 0.35rem 0.75rem; font-family: var(--font-mono); font-size: 11px; cursor: pointer; transition: all 0.2s; }
+  .admin-review-save-btn:hover { background: rgba(0,212,170,0.22); }
+  .admin-review-del-btn { background: rgba(255,107,157,0.12); color: var(--pink); border: 0.5px solid rgba(255,107,157,0.25); border-radius: 8px; padding: 0.35rem 0.75rem; font-family: var(--font-mono); font-size: 11px; cursor: pointer; transition: all 0.2s; }
+  .admin-review-del-btn:hover { background: rgba(255,107,157,0.22); }
+  .admin-review-body { display: grid; gap: 0.5rem; }
+  .admin-review-text-input { background: rgba(255,255,255,0.04); border: 0.5px solid var(--border); border-radius: 8px; padding: 0.5rem 0.75rem; font-family: var(--font-body); font-size: 12px; color: var(--text); width: 100%; resize: vertical; min-height: 60px; transition: border-color 0.2s; }
+  .admin-review-text-input:focus { outline: none; border-color: var(--purple); }
+  .admin-review-row2 { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+  .admin-review-country-input { background: rgba(255,255,255,0.04); border: 0.5px solid var(--border); border-radius: 8px; padding: 0.4rem 0.7rem; font-family: var(--font-mono); font-size: 11px; color: var(--text); flex: 1; min-width: 100px; }
+  .admin-review-country-input:focus { outline: none; border-color: var(--purple); }
+  .admin-star-picker { display: flex; gap: 3px; }
+  .admin-sp-star { font-size: 1.1rem; cursor: pointer; transition: transform 0.1s; filter: grayscale(1) opacity(0.4); }
+  .admin-sp-star.active { filter: grayscale(0) opacity(1); transform: scale(1.1); }
+  .admin-no-reviews { text-align: center; padding: 2rem; color: var(--text3); font-family: var(--font-mono); font-size: 13px; }
+  .review-meta { flex: 1; }
+  .review-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; }
+  .review-date { font-size: 11px; color: var(--text3); font-family: var(--font-mono); }
+  .review-stars { display: flex; gap: 2px; }
+  .review-text { font-size: 13px; color: var(--text2); line-height: 1.7; font-style: italic; }
+  .review-country { font-size: 11px; color: var(--text3); margin-top: 0.5rem; font-family: var(--font-mono); }
+
+  /* ── FOOTER ── */
+  footer { border-top: 0.5px solid var(--border); padding: 2.5rem 0; position: relative; z-index: 1; }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  .footer-copy { font-size: 12px; color: var(--text3); font-family: var(--font-mono); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { font-size: 12px; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--text2); }
+
+  /* ── TOAST ── */
+  .toast { position: fixed; bottom: 2rem; right: 2rem; background: rgba(13,13,31,0.95); border: 0.5px solid rgba(0,212,170,0.3); border-radius: 14px; padding: 1rem 1.5rem; z-index: 10000; display: flex; align-items: center; gap: 0.75rem; font-size: 14px; backdrop-filter: blur(20px); transform: translateY(100px); opacity: 0; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 30px rgba(0,212,170,0.1); }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { font-size: 1.2rem; }
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 0; transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal { transform: translateY(30px); }
+  .reveal-left { transform: translateX(-40px); }
+  .reveal-right { transform: translateX(40px); }
+  .reveal-scale { transform: scale(0.9); }
+  .reveal.visible, .reveal-left.visible, .reveal-right.visible, .reveal-scale.visible { opacity: 1; transform: none; }
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+  .delay-3 { transition-delay: 0.3s; }
+  .delay-4 { transition-delay: 0.4s; }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider { width: 60px; height: 3px; background: var(--grad); border-radius: 99px; margin: 0 auto 3.5rem; box-shadow: 0 0 15px rgba(124,92,252,0.6), 0 0 30px rgba(124,92,252,0.3); animation: divider-pulse 2s ease-in-out infinite alternate; }
+  @keyframes divider-pulse { from { width: 60px; box-shadow: 0 0 15px rgba(124,92,252,0.6); } to { width: 100px; box-shadow: 0 0 25px rgba(0,212,170,0.7); } }
+
+  /* ══════════════════════════════════════
+     ADMIN PANEL
+  ══════════════════════════════════════ */
+  #admin-panel {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(2,2,10,0.97);
+    backdrop-filter: blur(30px);
+    overflow-y: auto;
+  }
+
+  #admin-panel.open { display: block; }
+
+  .admin-wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+  }
+
+  .admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .admin-title-wrap h2 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+  }
+
+  .admin-title-wrap p {
+    font-size: 13px;
+    color: var(--text3);
+    font-family: var(--font-mono);
+    margin-top: 2px;
+  }
+
+  .admin-close-btn {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    color: var(--text2);
+    font-size: 20px;
+    cursor: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .admin-close-btn:hover { background: var(--surface2); border-color: var(--border2); color: var(--text); }
+
+  .admin-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .admin-tab {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 0.5px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+    cursor: none;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .admin-tab:hover { border-color: var(--border2); color: var(--text); }
+  .admin-tab.active { background: var(--grad); border: none; color: #fff; }
+
+  .admin-section { display: none; }
+  .admin-section.active { display: block; }
+
+  .admin-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .admin-card-title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .admin-card-title::before {
+    content: '';
+    width: 4px; height: 16px;
+    border-radius: 99px;
+    background: var(--grad);
+  }
+
+  .admin-field { margin-bottom: 1rem; }
+  .admin-label { font-family: var(--font-mono); font-size: 11px; color: var(--teal); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; display: block; }
+  .admin-input {
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text);
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .admin-input:focus { outline: none; border-color: var(--purple); box-shadow: 0 0 15px rgba(124,92,252,0.15); }
+  .admin-input::placeholder { color: var(--text3); }
+  textarea.admin-input { resize: vertical; min-height: 90px; }
+
+  .admin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .admin-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+
+  .admin-save-btn {
+    background: var(--grad);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.75rem;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: none;
+    transition: opacity 0.2s, transform 0.2s;
+    box-shadow: 0 0 25px rgba(124,92,252,0.4);
+    margin-top: 0.75rem;
+  }
+  .admin-save-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .admin-danger-btn {
+    background: rgba(255,107,157,0.15);
+    color: var(--pink);
+    border: 0.5px solid rgba(255,107,157,0.3);
+    border-radius: 10px;
+    padding: 0.6rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: none;
+    transition: all 0.2s;
+  }
+  .admin-danger-btn:hover { background: rgba(255,107,157,0.25); border-color: var(--pink); }
+
+  .admin-skill-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
+  .admin-img-upload-wrap { display: flex; align-items: center; gap: 0.6rem; }
+  .grad-picker-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+  .grad-swatch { width: 36px; height: 36px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; flex-shrink: 0; position: relative; }
+  .grad-swatch:hover { transform: scale(1.1); }
+  .grad-swatch.selected { border-color: #fff; box-shadow: 0 0 0 2px var(--purple); }
+  .grad-swatch-label { font-family: var(--font-mono); font-size: 10px; color: var(--text3); margin-top: 0.3rem; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .bg-img-preview-strip { width: 100%; height: 60px; border-radius: 10px; background-size: cover; background-position: center; margin-top: 0.5rem; border: 0.5px solid var(--border2); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+  .admin-img-preview { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; border: 0.5px solid var(--border2); background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; overflow: hidden; flex-shrink: 0; }
+  .admin-img-upload-btn { background: var(--surface); border: 0.5px dashed var(--border2); border-radius: 8px; padding: 0.4rem 0.8rem; font-family: var(--font-mono); font-size: 11px; color: var(--teal); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .admin-img-upload-btn:hover { border-color: var(--teal); background: rgba(0,212,170,0.05); }
+  input[type="file"].admin-file-input { display: none; }
+  .admin-skill-name-input { flex: 2; }
+  .admin-skill-pct-input { flex: 1; }
+  .admin-skill-del { background: none; border: none; color: var(--text3); font-size: 18px; cursor: none; transition: color 0.2s; flex-shrink: 0; }
+  .admin-skill-del:hover { color: var(--pink); }
+
+  .admin-add-btn {
+    background: var(--surface);
+    border: 0.5px dashed var(--border2);
+    border-radius: 10px;
+    padding: 0.6rem 1.2rem;
+    color: var(--text2);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: none;
+    width: 100%;
+    margin-top: 0.5rem;
+    transition: all 0.2s;
+  }
+  .admin-add-btn:hover { border-color: var(--purple); color: var(--purple2); background: rgba(124,92,252,0.05); }
+
+  .admin-project-card { background: rgba(255,255,255,0.02); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+  .admin-project-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .admin-project-num { font-family: var(--font-mono); font-size: 11px; color: var(--text3); }
+
+  .admin-login-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .admin-login-box {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .admin-login-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .admin-login-sub {
+    font-size: 13px;
+    color: var(--text3);
+    font-family: var(--font-mono);
+    margin-bottom: 1.5rem;
+  }
+
+  .admin-login-error {
+    font-size: 12px;
+    color: var(--pink);
+    font-family: var(--font-mono);
+    margin-top: 0.5rem;
+    display: none;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg2); border-bottom: 0.5px solid var(--border); padding: 1.5rem; gap: 1.25rem; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-avatar-wrapper { display: none; }
+    .hero-stats { gap: 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .about-visual { height: 320px; }
+    .about-img-main { width: 180px; height: 220px; }
+    .about-photo-frame { width: 140px; height: 180px; top: 0; right: 0; }
+    .about-code-card { display: none; }
+    .about-values { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-body { grid-template-columns: 1fr; }
+    .project-links { flex-direction: row; align-items: flex-start; }
+    .case-study { grid-template-columns: 1fr; }
+    .skills-cats { grid-template-columns: 1fr; }
+    .socials-grid { grid-template-columns: 1fr; }
+    .cta-wrapper { padding: 2.5rem 1.5rem; }
+    .reviews-layout { grid-template-columns: 1fr; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    body { cursor: default; }
+    .cursor, .cursor-trail { display: none; }
+    .admin-row, .admin-row-3 { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 
-<nav class="bottom-nav">
-    <a href="#home"><i class="fas fa-home"></i><span>Home</span></a>
-    <a href="#services"><i class="fas fa-th-large"></i><span>Services</span></a>
-    <a href="#payment"><i class="fas fa-wallet"></i><span>Pay</span></a>
-    <a href="#contact"><i class="fas fa-paper-plane"></i><span>Contact</span></a>
-</nav>
-
-<div class="container">
-    <header class="header" id="home">
-        <div class="logo">LOGO</div>
-        <h1>SWADHIN</h1>
-        <p>Creative Digital Solutions Provider</p>
-    </header>
-
-    <h3 class="section-title" id="services">Our Services</h3>
-    <div class="slider-container">
-        <div class="service-card">
-            <h4>Web Design</h4>
-            <p>Clean and modern UI/UX designs.</p>
-        </div>
-        <div class="service-card">
-            <h4>Digital Marketing</h4>
-            <p>Grow your brand visibility online.</p>
-        </div>
-        <div class="service-card">
-            <h4>Consulting</h4>
-            <p>Expert business strategy sessions.</p>
-        </div>
+<!-- ════════════════════════════════
+     INTRO ANIMATION SCREEN
+════════════════════════════════ -->
+<div id="intro-screen">
+  <div class="intro-bg-lines"></div>
+  <div class="intro-orb intro-orb1"></div>
+  <div class="intro-orb intro-orb2"></div>
+  <div class="intro-content">
+    <div class="intro-logo">
+      <img id="intro-logo-img" src="https://i.ibb.co/Y4z8tXyC/Screenshot-2025-09-14-044143.png" alt="MKS">
     </div>
-
-    <h3 class="section-title" id="payment">Payment Options</h3>
-    <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'qr')">QR Code</button>
-        <button class="tab-btn" onclick="openTab(event, 'bank')">Bank Info</button>
-    </div>
-
-    <div id="qr" class="tab-content active">
-        <div style="background: #eee; padding: 20px; display: inline-block; border-radius: 10px;">
-            <i class="fas fa-qrcode fa-5x"></i>
-        </div>
-        <p style="margin-top:10px; font-size: 0.9rem;">Scan to pay instantly</p>
-    </div>
-
-    <div id="bank" class="tab-content">
-        <p><strong>Bank:</strong> Global Bank Corp</p>
-        <p><strong>A/C:</strong> 1234 5678 9012</p>
-        <p><strong>IFSC:</strong> GBC000123</p>
-    </div>
-
-    <h3 class="section-title" id="contact">Get In Touch</h3>
-    <form class="contact-form">
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea placeholder="How can we help?" rows="3"></textarea>
-        <button type="submit" class="btn-submit">Send Message</button>
-    </form>
-
-    <div class="map-container">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509364!2d144.95373531531615!3d-37.81627973597854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sau!4v1611811111111!5m2!1sen!2sau" allowfullscreen="" loading="lazy"></iframe>
-        <a href="https://goo.gl/maps/example" class="btn-direction">Open in Google Maps</a>
-    </div>
+    <div class="intro-name">MKS<br><span>Sourov</span></div>
+    <div class="intro-tagline">Fullstack Engineer &amp; Product Builder</div>
+    <div class="intro-loader"><div class="intro-loader-fill" id="intro-loader-fill"></div></div>
+    <div class="intro-pct" id="intro-pct">Loading...</div>
+  </div>
 </div>
 
-<script>
-    // Tab switching logic
-    function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tab-btn");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
-</script>
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
 
+<!-- Particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Background orbs -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<div class="orb orb4"></div>
+
+<!-- ════════════════════════════════
+     NAV
+════════════════════════════════ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-img">
+      <img id="nav-logo-img" src="https://i.ibb.co/Y4z8tXyC/Screenshot-2025-09-14-044143.png" alt="MKS Sourov">
+    </div>
+    <span class="nav-logo-text" id="nav-logo-text">MKS.</span>
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#social-section">Social</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:0.5rem;">
+    <a href="#" class="nav-admin-btn" id="admin-open-btn" onclick="openAdmin(event)">⚙ Admin</a>
+    <a href="#contact" class="nav-cta">Hire Me →</a>
+  </div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ════════════════════════════════
+     HERO
+════════════════════════════════ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge" id="hero-badge-text">Available for freelance projects worldwide</div>
+        <h1 class="hero-name" id="hero-name-el">MKS<br><span id="hero-name-span">Sourov</span></h1>
+        <p class="hero-title" id="hero-title-el">Fullstack Engineer &amp; Product Builder</p>
+        <p class="hero-desc" id="hero-desc-el">
+          I don't just write code — <strong>I build products that grow your business.</strong>
+          From scalable web apps and SaaS platforms to robust APIs, I bridge the gap between
+          your business goals and production-ready software.
+        </p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn-primary">Let's Build Together →</a>
+          <a href="#projects" class="btn-secondary">See My Work</a>
+        </div>
+        <div class="hero-stats" id="hero-stats-container"></div>
+        <div class="social-bar" id="social-bar-container">
+          <span class="social-bar-label">Find me</span>
+        </div>
+      </div>
+      <div class="hero-avatar-wrapper">
+        <div class="hero-avatar-ring">
+          <img class="hero-avatar-img" id="hero-avatar-img" src="https://i.ibb.co/Y4z8tXyC/Screenshot-2025-09-14-044143.png" alt="MKS Sourov">
+          <div class="hero-img-badge">
+            <div class="hero-img-badge-dot"></div>
+            <div class="hero-img-badge-text"><strong>Open to work</strong>Available now</div>
+          </div>
+          <div class="hero-img-tag" id="hero-img-tag">FULLSTACK DEV</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     ABOUT
+════════════════════════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="section-divider"></div>
+    <div class="about-grid">
+      <div class="about-text reveal-left">
+        <div class="section-tag">// about me</div>
+        <h2 class="section-title">The developer<br>behind the <span>code</span></h2>
+        <div id="about-text-container"></div>
+        <div class="about-values" id="about-values-container"></div>
+      </div>
+      <div class="about-visual reveal-right">
+        <div class="about-img-main">
+          <img id="about-img-main" src="https://i.ibb.co/tPnktzj8/Gemini-Generated-Image-mjsxmqmjsxmqmjsx.png" alt="MKS Sourov" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+        </div>
+        <div class="about-photo-frame">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=520&fit=crop" alt="Developer workspace">
+        </div>
+        <div class="about-img-badge">
+          <div class="about-img-badge-num" id="about-exp-num">3+</div>
+          <div class="about-img-badge-label">YRS EXP</div>
+        </div>
+        <div class="about-code-card">
+          <div class="about-code-card-title">⚡ STATUS</div>
+          <div class="about-code-line"><span class="kw">const</span> <span class="fn">dev</span> = {</div>
+          <div class="about-code-line">&nbsp;&nbsp;<span class="str">"open"</span>: <span class="kw">true</span>,</div>
+          <div class="about-code-line">&nbsp;&nbsp;<span class="str">"hire"</span>: <span class="kw">now</span></div>
+          <div class="about-code-line">}<span class="cm"> // ✓ ready</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     SERVICES
+════════════════════════════════ -->
+<section id="services">
+  <div class="container">
+    <div class="section-divider"></div>
+    <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
+      <div class="section-tag">// what I do</div>
+      <h2 class="section-title">Services built for<br><span>real business impact</span></h2>
+    </div>
+    <div class="services-grid" id="services-grid"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     PROJECTS
+════════════════════════════════ -->
+<section id="projects">
+  <div class="container">
+    <div class="section-divider"></div>
+    <div class="reveal">
+      <div class="section-tag">// case studies</div>
+      <h2 class="section-title">Projects that <span>prove the point</span></h2>
+    </div>
+    <div class="projects-grid" id="projects-grid"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     SKILLS
+════════════════════════════════ -->
+<section id="skills">
+  <div class="container">
+    <div class="section-divider"></div>
+    <div class="reveal" style="text-align:center; max-width:560px; margin:0 auto;">
+      <div class="section-tag">// tech stack</div>
+      <h2 class="section-title">Tools I use to<br><span>get things done</span></h2>
+    </div>
+    <div class="skills-cats" id="skills-cats-container"></div>
+    <div class="tech-strip reveal">
+      <div class="tech-strip-inner" id="tech-strip-inner"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     SOCIAL
+════════════════════════════════ -->
+<section id="social-section">
+  <div class="container">
+    <div class="section-divider"></div>
+    <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
+      <div class="section-tag">// connect with me</div>
+      <h2 class="section-title">Follow my journey<br><span>across platforms</span></h2>
+    </div>
+    <div class="socials-grid" id="socials-grid"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     CONTACT
+════════════════════════════════ -->
+<section id="contact">
+  <div class="container">
+    <div class="section-divider"></div>
+    <div class="cta-wrapper reveal">
+      <h2 class="cta-title">Got a project? <span style="background:var(--grad2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Let's talk.</span></h2>
+      <p class="cta-sub" id="contact-sub">Whether it's a SaaS idea, a side project, or a full product — I'm ready to build it with you.</p>
+      <div class="cta-buttons">
+        <a id="contact-email-btn" href="mailto:sourov@example.com" class="btn-primary">Send Email →</a>
+        <a id="contact-whatsapp-btn" href="https://wa.me/8801700000000" class="btn-secondary" target="_blank">WhatsApp</a>
+      </div>
+      <div class="contact-info" id="contact-info-container"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     REVIEWS
+════════════════════════════════ -->
+<section id="reviews">
+  <div class="container">
+    <div class="section-divider"></div>
+    <div class="reveal" style="text-align:center; max-width:560px; margin:0 auto;">
+      <div class="section-tag">// testimonials</div>
+      <h2 class="section-title">What clients <span>say</span></h2>
+    </div>
+    <div class="reviews-layout">
+      <div class="reviews-left-col">
+        <div class="rating-summary">
+          <div class="avg-rating-num" id="avgRatingNum">0.0</div>
+          <div class="avg-stars-row" id="avgStarsDisplay"></div>
+          <div class="total-reviews-label" id="totalReviewsLabel">No reviews yet</div>
+          <div class="rating-bars">
+            <div class="rating-bar-row"><span class="rb-label">5</span><span>⭐</span><div class="rb-bg"><div class="rb-fill" id="bar5" style="width:0%"></div></div><span class="rb-cnt" id="cnt5">0</span></div>
+            <div class="rating-bar-row"><span class="rb-label">4</span><span>⭐</span><div class="rb-bg"><div class="rb-fill" id="bar4" style="width:0%"></div></div><span class="rb-cnt" id="cnt4">0</span></div>
+            <div class="rating-bar-row"><span class="rb-label">3</span><span>⭐</span><div class="rb-bg"><div class="rb-fill" id="bar3" style="width:0%"></div></div><span class="rb-cnt" id="cnt3">0</span></div>
+            <div class="rating-bar-row"><span class="rb-label">2</span><span>⭐</span><div class="rb-bg"><div class="rb-fill" id="bar2" style="width:0%"></div></div><span class="rb-cnt" id="cnt2">0</span></div>
+            <div class="rating-bar-row"><span class="rb-label">1</span><span>⭐</span><div class="rb-bg"><div class="rb-fill" id="bar1" style="width:0%"></div></div><span class="rb-cnt" id="cnt1">0</span></div>
+          </div>
+        </div>
+        <div class="review-form">
+          <div class="review-form-title">Leave a Review</div>
+          <input type="text" class="review-input" id="reviewName" placeholder="Your name *">
+          <input type="text" class="review-input" id="reviewCountry" placeholder="Country (optional)">
+          <div class="star-picker" id="starPicker">
+            <span class="sp-star" data-val="1">⭐</span>
+            <span class="sp-star" data-val="2">⭐</span>
+            <span class="sp-star" data-val="3">⭐</span>
+            <span class="sp-star" data-val="4">⭐</span>
+            <span class="sp-star" data-val="5">⭐</span>
+          </div>
+          <textarea class="review-input" id="reviewText" placeholder="Write your review..."></textarea>
+          <button class="submit-review-btn" id="submitReviewBtn">Submit Review →</button>
+        </div>
+      </div>
+      <div>
+        <div class="reviews-list-wrap" id="reviewsList">
+          <div id="noReviewsMsg" style="color:var(--text3);font-size:13px;font-family:var(--font-mono);padding:2rem 0;">No reviews yet. Be the first!</div>
+        </div>
+        <div class="reviews-pagination" id="reviewsPagination"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FOOTER
+════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-copy" id="footer-copy">© 2025 MKS Sourov. Built with passion.</div>
+      <div class="footer-links">
+        <a href="#hero">Top</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="#" onclick="openAdmin(event)">Admin</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="successToast">
+  <span class="toast-icon">✅</span>
+  <span>Review submitted! Thank you.</span>
+</div>
+
+<!-- Admin Toast -->
+<div class="toast" id="adminToast" style="border-color:rgba(0,212,170,0.4);">
+  <span class="toast-icon">💾</span>
+  <span id="adminToastMsg">Changes saved successfully!</span>
+</div>
+
+<!-- ════════════════════════════════
+     ADMIN PANEL
+════════════════════════════════ -->
+<div id="admin-panel">
+  <div class="admin-wrap">
+
+    <!-- LOGIN -->
+    <div id="admin-login-view">
+      <div class="admin-login-screen">
+        <div class="admin-login-box">
+          <div class="admin-login-title">Admin Panel</div>
+          <div class="admin-login-sub">// secure access</div>
+          <input type="password" class="admin-input" id="admin-pass-input" placeholder="Enter password..." style="margin-bottom:0.75rem;" onkeydown="if(event.key==='Enter')doAdminLogin()">
+          <button class="admin-save-btn" style="width:100%;margin-top:0;" onclick="doAdminLogin()">Login →</button>
+          <div class="admin-login-error" id="admin-login-error">❌ Incorrect password</div>
+          <div style="margin-top:1.25rem;font-size:11px;color:var(--text3);font-family:var(--font-mono);">Default password: <strong style="color:var(--teal)">admin123</strong></div>
+        </div>
+        <button class="admin-close-btn" onclick="closeAdmin()" style="position:fixed;top:1.5rem;right:1.5rem;">✕</button>
+      </div>
+    </div>
+
+    <!-- MAIN ADMIN -->
+    <div id="admin-main-view" style="display:none;">
+      <div class="admin-header">
+        <div class="admin-title-wrap">
+          <h2>⚙ Admin Panel</h2>
+          <p>// Edit your portfolio content</p>
+        </div>
+        <button class="admin-close-btn" onclick="closeAdmin()">✕</button>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchTab('hero', this)">Hero</button>
+        <button class="admin-tab" onclick="switchTab('about', this)">About</button>
+        <button class="admin-tab" onclick="switchTab('services', this)">Services</button>
+        <button class="admin-tab" onclick="switchTab('projects', this)">Projects</button>
+        <button class="admin-tab" onclick="switchTab('skills', this)">Skills</button>
+        <button class="admin-tab" onclick="switchTab('social', this)">Social</button>
+        <button class="admin-tab" onclick="switchTab('contact', this)">Contact</button>
+        <button class="admin-tab" onclick="switchTab('reviews', this)">⭐ Reviews</button>
+        <button class="admin-tab" onclick="switchTab('settings', this)">Settings</button>
+      </div>
+
+      <!-- TAB: HERO -->
+      <div id="tab-hero" class="admin-section active">
+        <div class="admin-card">
+          <div class="admin-card-title">Hero Section</div>
+          <div class="admin-row">
+            <div class="admin-field"><label class="admin-label">First Name</label><input type="text" class="admin-input" id="a-hero-fname" placeholder="MKS"></div>
+            <div class="admin-field"><label class="admin-label">Last Name / Highlight</label><input type="text" class="admin-input" id="a-hero-lname" placeholder="Sourov"></div>
+          </div>
+          <div class="admin-field"><label class="admin-label">Job Title</label><input type="text" class="admin-input" id="a-hero-title" placeholder="Fullstack Engineer & Product Builder"></div>
+          <div class="admin-field"><label class="admin-label">Badge Text</label><input type="text" class="admin-input" id="a-hero-badge" placeholder="Available for freelance projects worldwide"></div>
+          <div class="admin-field"><label class="admin-label">Description</label><textarea class="admin-input" id="a-hero-desc" rows="3"></textarea></div>
+          <div class="admin-field"><label class="admin-label">Image Tag (e.g. FULLSTACK DEV)</label><input type="text" class="admin-input" id="a-hero-img-tag" placeholder="FULLSTACK DEV"></div>
+          <div class="admin-field"><label class="admin-label">Avatar Image URL</label><input type="text" class="admin-input" id="a-hero-avatar-url" placeholder="https://..."></div>
+          <div class="admin-row">
+            <div class="admin-field"><label class="admin-label">Avatar Width (px)</label><input type="number" class="admin-input" id="a-hero-avatar-w" placeholder="340" min="80" max="600"></div>
+            <div class="admin-field"><label class="admin-label">Avatar Height (px)</label><input type="number" class="admin-input" id="a-hero-avatar-h" placeholder="420" min="80" max="800"></div>
+          </div>
+          <div class="admin-field"><label class="admin-label">Nav Logo URL</label><input type="text" class="admin-input" id="a-nav-logo-url" placeholder="https://..."></div>
+          <div class="admin-row">
+            <div class="admin-field"><label class="admin-label">Nav Logo Size (px)</label><input type="number" class="admin-input" id="a-nav-logo-size" placeholder="38" min="24" max="80"></div>
+            <div class="admin-field"><label class="admin-label">Intro Logo Size (px)</label><input type="number" class="admin-input" id="a-intro-logo-size" placeholder="90" min="50" max="200"></div>
+          </div>
+          <button class="admin-save-btn" onclick="saveHero()">Save Hero →</button>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-title">Stats</div>
+          <div id="hero-stats-admin"></div>
+          <button class="admin-add-btn" onclick="addStat()">+ Add Stat</button>
+          <button class="admin-save-btn" onclick="saveHero()">Save Stats →</button>
+        </div>
+      </div>
+
+      <!-- TAB: ABOUT -->
+      <div id="tab-about" class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title">About Content</div>
+          <div class="admin-row">
+            <div class="admin-field"><label class="admin-label">Years of Experience</label><input type="text" class="admin-input" id="a-about-exp" placeholder="3+"></div>
+            <div class="admin-field"><label class="admin-label">About Image URL</label><input type="text" class="admin-input" id="a-about-img-url" placeholder="https://..."></div>
+          </div>
+          <div class="admin-row">
+            <div class="admin-field"><label class="admin-label">About Image Width (px, e.g. 260)</label><input type="number" class="admin-input" id="a-about-img-w" placeholder="260" min="80" max="600"></div>
+            <div class="admin-field"><label class="admin-label">About Image Height (px, e.g. 340)</label><input type="number" class="admin-input" id="a-about-img-h" placeholder="340" min="80" max="800"></div>
+          </div>
+          <div id="about-paras-admin"></div>
+          <button class="admin-add-btn" onclick="addAboutPara()">+ Add Paragraph</button>
+          <button class="admin-save-btn" onclick="saveAbout()">Save About →</button>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-title">Value Cards</div>
+          <div id="about-values-admin"></div>
+          <button class="admin-add-btn" onclick="addValueCard()">+ Add Value Card</button>
+          <button class="admin-save-btn" onclick="saveAbout()">Save Values →</button>
+        </div>
+      </div>
+
+      <!-- TAB: SERVICES -->
+      <div id="tab-services" class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title">Services</div>
+          <div id="services-admin"></div>
+          <button class="admin-add-btn" onclick="addService()">+ Add Service</button>
+          <button class="admin-save-btn" onclick="saveServices()">Save Services →</button>
+        </div>
+      </div>
+
+      <!-- TAB: PROJECTS -->
+      <div id="tab-projects" class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title">Projects</div>
+          <div id="projects-admin"></div>
+          <button class="admin-add-btn" onclick="addProject()">+ Add Project</button>
+          <button class="admin-save-btn" onclick="saveProjects()">Save Projects →</button>
+        </div>
+      </div>
+
+      <!-- TAB: SKILLS -->
+      <div id="tab-skills" class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title">Skill Categories</div>
+          <div id="skills-admin"></div>
+          <button class="admin-add-btn" onclick="addSkillCat()">+ Add Category</button>
+          <button class="admin-save-btn" onclick="saveSkills()">Save Skills →</button>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-title">Tech Strip Items</div>
+          <div id="tech-strip-admin"></div>
+          <button class="admin-add-btn" onclick="addTechItem()">+ Add Tech</button>
+          <button class="admin-save-btn" onclick="saveSkills()">Save Tech Strip →</button>
+        </div>
+      </div>
+
+      <!-- TAB: SOCIAL -->
+      <div id="tab-social" class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title">Social Links</div>
+          <div id="social-admin"></div>
+          <button class="admin-add-btn" onclick="addSocialLink()">+ Add Social</button>
+          <button class="admin-save-btn" onclick="saveSocial()">Save Social →</button>
+        </div>
+      </div>
+
+      <!-- TAB: CONTACT -->
+      <div id="tab-contact" class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title">Contact Info</div>
+          <div class="admin-field"><label class="admin-label">Email</label><input type="text" class="admin-input" id="a-contact-email" placeholder="you@example.com"></div>
+          <div class="admin-field"><label class="admin-label">WhatsApp Number (with country code)</label><input type="text" class="admin-input" id="a-contact-whatsapp" placeholder="8801700000000"></div>
+          <div class="admin-field"><label class="admin-label">Contact Description</label><textarea class="admin-input" id="a-contact-desc" rows="2"></textarea></div>
+          <button class="admin-save-btn" onclick="saveContact()">Save Contact →</button>
+        </div>
+      </div>
+
+      <!-- TAB: REVIEWS -->
+      <div id="tab-reviews" class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title">নতুন রিভিউ যোগ করুন</div>
+          <div class="admin-row">
+            <div class="admin-field"><label class="admin-label">নাম *</label><input type="text" class="admin-input" id="ar-new-name" placeholder="রিভিউয়ারের নাম"></div>
+            <div class="admin-field"><label class="admin-label">দেশ (optional)</label><input type="text" class="admin-input" id="ar-new-country" placeholder="Bangladesh"></div>
+          </div>
+          <div class="admin-field">
+            <label class="admin-label">রেটিং</label>
+            <div id="ar-new-stars" style="display:flex;gap:6px;margin-top:0.4rem;">
+              <span class="admin-sp-star" data-val="1" onclick="setNewReviewStar(1)" style="font-size:1.6rem;cursor:pointer;filter:grayscale(1) opacity(0.35);transition:all 0.15s;">⭐</span>
+              <span class="admin-sp-star" data-val="2" onclick="setNewReviewStar(2)" style="font-size:1.6rem;cursor:pointer;filter:grayscale(1) opacity(0.35);transition:all 0.15s;">⭐</span>
+              <span class="admin-sp-star" data-val="3" onclick="setNewReviewStar(3)" style="font-size:1.6rem;cursor:pointer;filter:grayscale(1) opacity(0.35);transition:all 0.15s;">⭐</span>
+              <span class="admin-sp-star" data-val="4" onclick="setNewReviewStar(4)" style="font-size:1.6rem;cursor:pointer;filter:grayscale(1) opacity(0.35);transition:all 0.15s;">⭐</span>
+              <span class="admin-sp-star" data-val="5" onclick="setNewReviewStar(5)" style="font-size:1.6rem;cursor:pointer;filter:grayscale(1) opacity(0.35);transition:all 0.15s;">⭐</span>
+            </div>
+          </div>
+          <div class="admin-field"><label class="admin-label">রিভিউ টেক্সট</label><textarea class="admin-input" id="ar-new-text" rows="3" placeholder="রিভিউ লিখুন..."></textarea></div>
+          <button class="admin-save-btn" onclick="addReviewFromAdmin()">রিভিউ যোগ করুন &rarr;</button>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-title">সকল রিভিউ</div>
+          <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem;font-family:var(--font-mono);">মোট রিভিউ: <span id="admin-review-count" style="color:var(--teal);">0</span></p>
+          <div id="admin-reviews-list"></div>
+        </div>
+      </div>
+
+      <!-- TAB: SETTINGS -->
+      <div id="tab-settings" class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title">Password</div>
+          <div class="admin-field"><label class="admin-label">New Password</label><input type="password" class="admin-input" id="a-new-pass" placeholder="Enter new password..."></div>
+          <div class="admin-field"><label class="admin-label">Confirm Password</label><input type="password" class="admin-input" id="a-confirm-pass" placeholder="Confirm password..."></div>
+          <button class="admin-save-btn" onclick="changePassword()">Change Password →</button>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-title" style="color:var(--pink)">Danger Zone</div>
+          <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;">Reset all data to defaults. This cannot be undone.</p>
+          <button class="admin-danger-btn" onclick="resetAllData()">Reset All Data</button>
+        </div>
+      </div>
+
+    </div><!-- end admin-main-view -->
+  </div><!-- end admin-wrap -->
+</div><!-- end admin-panel -->
+
+<script>
+// ══════════════════════════════════════════════════════
+//  DATA STORE
+// ══════════════════════════════════════════════════════
+const STORAGE_KEY = 'mks_portfolio_data_v2';
+const REVIEWS_KEY = 'mkssourov_reviews_v1';
+const PASS_KEY = 'mks_admin_pass';
+
+function getDefaultData() {
+  return {
+    hero: {
+      fname: 'MKS', lname: 'Sourov',
+      title: 'Fullstack Engineer & Product Builder',
+      badge: 'Available for freelance projects worldwide',
+      desc: "I don't just write code — I build products that grow your business. From scalable web apps and SaaS platforms to robust APIs, I bridge the gap between your business goals and production-ready software.",
+      imgTag: 'FULLSTACK DEV',
+      avatarUrl: 'https://i.ibb.co/Y4z8tXyC/Screenshot-2025-09-14-044143.png',
+      navLogoUrl: 'https://i.ibb.co/Y4z8tXyC/Screenshot-2025-09-14-044143.png',
+      avatarW: 340, avatarH: 420, navLogoSize: 38, introLogoSize: 90,
+      stats: [
+        { num: '3+', label: 'Years Experience' },
+        { num: '20+', label: 'Projects Shipped' },
+        { num: '5', label: 'Core Stacks' },
+        { num: '100+', label: 'Problems Solved' }
+      ]
+    },
+    about: {
+      exp: '3+',
+      imgW: 260, imgH: 340,
+      imgUrl: 'https://i.ibb.co/tPnktzj8/Gemini-Generated-Image-mjsxmqmjsxmqmjsx.png',
+      paras: [
+        "I'm MKS Sourov, a Fullstack Engineer from Bangladesh with 3+ years of experience turning complex ideas into clean, scalable web products.",
+        "I specialize in building full-product solutions — from database architecture and API design to responsive UIs that convert. I've worked with early-stage startups and growing businesses worldwide.",
+        "Outside of work, I contribute to open-source, explore new tech, and help other developers level up."
+      ],
+      values: [
+        { icon: '⚡', title: 'Speed-First', desc: 'Shipping fast without sacrificing quality — because time to market is a competitive advantage.' },
+        { icon: '🎯', title: 'Business-Focused', desc: 'Every technical decision is evaluated through a business lens. Code serves users and goals.' },
+        { icon: '🧱', title: 'Clean Architecture', desc: 'Scalable, maintainable code that your future team will thank you for.' },
+        { icon: '🌍', title: 'Global Standards', desc: 'Working with international clients means I bring global best practices to every project.' }
+      ]
+    },
+    services: [
+      { title: 'Fullstack Web Development', desc: 'From pixel-perfect frontends to bulletproof backends — I handle the entire stack. Whether it\'s a landing page, complex dashboard, or enterprise web app, I deliver performant, SEO-friendly, production-ready solutions.', tags: ['HTML', 'CSS', 'Node.js', 'PostgreSQL', 'REST API'], bg: 'service-img-bg1', emoji: '💻' },
+      { title: 'Mobile App Development', desc: 'Cross-platform mobile apps that feel truly native. I build apps that your users will actually want to open — combining great UX with reliable, well-tested code for both iOS and Android from a single codebase.', tags: ['React Native', 'Flutter', 'Expo', 'Firebase'], bg: 'service-img-bg2', emoji: '📱' },
+      { title: 'SaaS & Product Development', desc: 'Got a SaaS idea? I take you from zero to a deployed, scalable product. I architect systems with growth in mind — multi-tenancy, subscription billing, analytics, and the infrastructure to handle your first 10k users.', tags: ['SaaS Architecture', 'Auth & Billing', 'Stripe', 'AWS'], bg: 'service-img-bg3', emoji: '🚀' },
+      { title: 'API & Backend Engineering', desc: 'Robust, well-documented APIs that your team will love and your frontend will perform with. I specialize in high-performance REST and GraphQL APIs with proper auth, rate limiting, and error handling built in from day one.', tags: ['FastAPI', 'Laravel', 'GraphQL', 'Docker', 'MongoDB'], bg: 'service-img-bg4', emoji: '⚙️' }
+    ],
+    projects: [
+      { num: '01', type: 'SaaS Platform', title: 'Multi-tenant SaaS Dashboard', desc: 'A complete business analytics SaaS platform with role-based access, real-time data, subscription billing, and a fully responsive admin dashboard.', challenge: 'Client needed a scalable multi-tenant platform that could serve multiple businesses from a single codebase without data leaks.', solution: 'Built schema-based multi-tenancy in PostgreSQL with Next.js frontend, FastAPI backend, Stripe billing, and row-level security policies.', outcome: 'Zero data leaks. 99.9% uptime. 3× faster page loads vs previous system.', stack: ['Next.js', 'FastAPI', 'PostgreSQL', 'Stripe', 'Docker', 'AWS'], liveUrl: '#', githubUrl: 'https://github.com/mkssourov', emoji: '📊', bg: 'project-img-bg1' },
+      { num: '02', type: 'E-Commerce', title: 'E-Commerce Platform', desc: 'Full-featured e-commerce platform with inventory management, payment integration, and real-time analytics dashboard.', challenge: 'Existing platform was slow, hard to maintain, and couldn\'t scale past 500 concurrent users.', solution: 'Rebuilt with Next.js, optimized DB queries, added Redis caching, and deployed on AWS with auto-scaling.', outcome: '4x faster page loads, 99.8% uptime, successfully handles 5000+ concurrent users.', stack: ['Next.js', 'Node.js', 'PostgreSQL', 'Redis', 'Stripe', 'AWS'], liveUrl: '#', githubUrl: 'https://github.com/mkssourov', emoji: '🛒', bg: 'project-img-bg2' }
+    ],
+    skills: [
+      { title: 'Frontend', items: [{ name: 'HTML', pct: 90 }, { name: 'Tailwind CSS', pct: 88 }, { name: 'TypeScript', pct: 80 }, { name: 'Framer Motion', pct: 75 }] },
+      { title: 'Backend', items: [{ name: 'Node.js / Express', pct: 88 }, { name: 'Python / FastAPI', pct: 85 }, { name: 'Laravel / PHP', pct: 82 }, { name: 'REST / GraphQL', pct: 85 }] },
+      { title: 'Database', items: [{ name: 'PostgreSQL', pct: 85 }, { name: 'MongoDB', pct: 82 }, { name: 'MySQL / MariaDB', pct: 80 }, { name: 'Redis', pct: 75 }] },
+      { title: 'DevOps & Tools', items: [{ name: 'Docker', pct: 78 }, { name: 'AWS / Vercel', pct: 72 }, { name: 'Git / GitHub', pct: 92 }, { name: 'Linux / CI/CD', pct: 70 }] }
+    ],
+    techStrip: [
+      { emoji: '⚛️', name: 'React' }, { emoji: '▲', name: 'Next.js' }, { emoji: '🐍', name: 'Python' },
+      { emoji: '🟢', name: 'Node.js' }, { emoji: '🐘', name: 'PostgreSQL' }, { emoji: '🍃', name: 'MongoDB' },
+      { emoji: '🐳', name: 'Docker' }, { emoji: '☁️', name: 'AWS' }, { emoji: '🔷', name: 'TypeScript' },
+      { emoji: '🔴', name: 'Redis' }, { emoji: '🐙', name: 'GitHub' }, { emoji: '🚀', name: 'FastAPI' },
+      { emoji: '🎨', name: 'Tailwind' }, { emoji: '💳', name: 'Stripe' }
+    ],
+    social: [
+      { platform: 'GitHub', handle: '@mkssourov', url: 'https://github.com/mkssourov', icon: '💻', color: '#333', desc: 'Open-source projects, code samples, and my development journey.', followLabel: 'Follow on GitHub' },
+      { platform: 'LinkedIn', handle: 'mkssourov', url: 'https://linkedin.com/in/mkssourov', icon: '💼', color: '#0077b5', desc: 'Professional updates, industry insights, and career milestones.', followLabel: 'Connect on LinkedIn' },
+      { platform: 'Facebook', handle: 'MKS Sourov', url: 'https://www.facebook.com/share/1UpBgSeGMk/', icon: '📘', color: '#1877f2', desc: 'Latest projects, tutorials, and developer community discussions.', followLabel: 'Follow on Facebook' },
+      { platform: 'Twitter / X', handle: '@mkssourov', url: 'https://twitter.com/mkssourov', icon: '🐦', color: '#1da1f2', desc: 'Hot takes, dev tips, and industry news in real-time.', followLabel: 'Follow on Twitter' },
+      { platform: 'YouTube', handle: 'MKS Sourov', url: 'https://youtube.com/@mkssourov', icon: '📺', color: '#ff0000', desc: 'Tutorials, coding walkthroughs, and tech content.', followLabel: 'Subscribe' },
+      { platform: 'Instagram', handle: '@mkssourov', url: 'https://instagram.com/mkssourov', icon: '📸', color: '#e4405f', desc: 'Behind the scenes, workspace setups, and creative work.', followLabel: 'Follow on Instagram' }
+    ],
+    contact: {
+      email: 'sourov@example.com',
+      whatsapp: '8801700000000',
+      desc: 'Whether it\'s a SaaS idea, a side project, or a full product — I\'m ready to build it with you.'
+    }
+  };
+}
+
+let data = getDefaultData();
+
+function loadData() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) data = { ...getDefaultData(), ...JSON.parse(saved) };
+  } catch(e) { data = getDefaultData(); }
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function getPass() {
+  return localStorage.getItem(PASS_KEY) || 'admin123';
+}
+
+// ══════════════════════════════════════════════════════
+//  RENDER FUNCTIONS
+// ══════════════════════════════════════════════════════
+
+function renderAll() {
+  renderHero();
+  renderAbout();
+  renderServices();
+  renderProjects();
+  renderSkills();
+  renderSocial();
+  renderContact();
+}
+
+function renderHero() {
+  const h = data.hero;
+  document.getElementById('nav-logo-img').src = h.navLogoUrl;
+  document.getElementById('intro-logo-img').src = h.navLogoUrl;
+  const navLogoWrap = document.querySelector('.nav-logo-img');
+  if(navLogoWrap) { const ns = h.navLogoSize||38; navLogoWrap.style.width=ns+'px'; navLogoWrap.style.height=ns+'px'; }
+  const introLogoWrap = document.querySelector('.intro-logo');
+  if(introLogoWrap) { const ils = h.introLogoSize||90; introLogoWrap.style.width=ils+'px'; introLogoWrap.style.height=ils+'px'; }
+  document.getElementById('hero-badge-text').textContent = h.badge;
+  const nameEl = document.getElementById('hero-name-el');
+  nameEl.innerHTML = `${h.fname}<br><span>${h.lname}</span>`;
+  document.getElementById('hero-title-el').textContent = h.title;
+  document.getElementById('hero-desc-el').innerHTML = h.desc;
+  const heroAvatarImg = document.getElementById('hero-avatar-img');
+  if(heroAvatarImg) {
+    heroAvatarImg.src = h.avatarUrl;
+    const aw = h.avatarW||340; const ah = h.avatarH||420;
+    heroAvatarImg.style.width = aw+'px'; heroAvatarImg.style.height = ah+'px';
+    heroAvatarImg.style.maxWidth = '100%';
+    const ring = document.querySelector('.hero-avatar-ring');
+    if(ring) { ring.style.width=(aw+20)+'px'; ring.style.height=(ah+20)+'px'; }
+  }
+  document.getElementById('hero-img-tag').textContent = h.imgTag;
+
+  const statsContainer = document.getElementById('hero-stats-container');
+  statsContainer.innerHTML = h.stats.map(s => `
+    <div class="stat-item">
+      <div class="stat-num">${s.num}</div>
+      <div class="stat-label">${s.label}</div>
+    </div>
+  `).join('');
+
+  // Social bar
+  const socialBar = document.getElementById('social-bar-container');
+  const socialIcons = {
+    GitHub: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>`,
+    LinkedIn: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>`,
+    Twitter: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+    Facebook: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`
+  };
+
+  const socialBarLinks = (data.social || []).slice(0,4).map(s => {
+    const key = s.platform.split('/')[0].trim();
+    const svg = socialIcons[key] || `<span>${s.icon}</span>`;
+    const cls = `sl-${key.toLowerCase()}`;
+    return `<a href="${s.url}" target="_blank" class="social-link ${cls}" title="${s.platform}">${svg}</a>`;
+  }).join('');
+
+  socialBar.innerHTML = `<span class="social-bar-label">Find me</span>${socialBarLinks}`;
+}
+
+function renderAbout() {
+  const a = data.about;
+  document.getElementById('about-exp-num').textContent = a.exp;
+  const aboutImg = document.getElementById('about-img-main');
+  aboutImg.src = a.imgUrl;
+  const aiw = a.imgW || 260; const aih = a.imgH || 340;
+  const aboutImgWrap = document.querySelector('.about-img-main');
+  if(aboutImgWrap) { aboutImgWrap.style.width = aiw+'px'; aboutImgWrap.style.height = aih+'px'; }
+  
+  const ptc = document.getElementById('about-text-container');
+  ptc.innerHTML = (a.paras||[]).map(p => `<p>${p}</p>`).join('');
+
+  const vtc = document.getElementById('about-values-container');
+  vtc.innerHTML = (a.values||[]).map(v => `
+    <div class="value-card">
+      <div class="value-icon">${v.iconImg ? `<img src="${v.iconImg}" style="width:32px;height:32px;object-fit:cover;border-radius:6px;">` : v.icon}</div>
+      <div class="value-title">${v.title}</div>
+      <div class="value-desc">${v.desc}</div>
+    </div>
+  `).join('');
+}
+
+function renderServices() {
+  const grid = document.getElementById('services-grid');
+  grid.innerHTML = (data.services||[]).map((s, i) => {
+    const bgStyle = s.bgImg
+      ? `background-image:linear-gradient(to bottom,rgba(6,6,16,0.2) 0%,rgba(6,6,16,0.88) 100%),url(${s.bgImg});background-size:cover;background-position:center;`
+      : '';
+    const bgClass = s.bgImg ? 'has-bg-img' : s.bg||'service-img-bg1';
+    const iconContent = s.iconImg
+      ? `<img src="${s.iconImg}" style="width:80px;height:80px;object-fit:cover;border-radius:12px;position:relative;z-index:1;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.5));">`
+      : `<span style="position:relative;z-index:1;">${s.emoji}</span>`;
+    return `
+    <div class="service-card reveal delay-${i+1}">
+      <div class="service-img">
+        <div class="service-img-inner ${bgClass}" style="font-size:3rem;${bgStyle}">${iconContent}</div>
+      </div>
+      <div class="service-body">
+        <div class="service-title">${s.title}</div>
+        <div class="service-desc">${s.desc}</div>
+        <div class="service-tags">${(s.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>`;
+  }).join('');
+  reObserve();
+}
+
+function renderProjects() {
+  const grid = document.getElementById('projects-grid');
+  const bgs = ['project-img-bg1','project-img-bg2','project-img-bg3','project-img-bg4'];
+  grid.innerHTML = (data.projects||[]).map((p, i) => {
+    const bgClass = p.bgImg ? '' : (p.bg || bgs[i%4]);
+    const bgStyle = p.bgImg
+      ? `background-image:linear-gradient(to bottom,rgba(6,6,16,0.15) 0%,rgba(6,6,16,0.85) 100%),url(${p.bgImg});background-size:cover;background-position:center;`
+      : '';
+    const iconContent = p.iconImg
+      ? `<img src="${p.iconImg}" style="width:90px;height:90px;object-fit:cover;border-radius:14px;position:relative;z-index:1;filter:drop-shadow(0 0 24px rgba(0,0,0,0.6));">`
+      : `<span class="project-img-emoji">${p.emoji}</span>`;
+    return `
+    <div class="project-card reveal">
+      <div class="project-img ${bgClass}" style="${bgStyle}">
+        <div class="project-img-inner">
+          ${iconContent}
+        </div>
+        <div class="project-tech-overlay">
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--teal);letter-spacing:0.1em;">${p.type.toUpperCase()}</span>
+        </div>
+      </div>`;
+  }).map((html2, i) => {
+    const p = data.projects[i];
+    return html2 + `
+      <div class="project-body">
+        <div>
+          <div class="project-meta">
+            <span class="project-num">${p.num}</span>
+            <span class="project-type">${p.type}</span>
+          </div>
+          <h3 class="project-title">${p.title}</h3>
+          <p class="project-desc">${p.desc}</p>
+          <div class="case-study">
+            <div><div class="cs-item-label">The Challenge</div><div class="cs-item-val">${p.challenge}</div></div>
+            <div><div class="cs-item-label">My Solution</div><div class="cs-item-val">${p.solution}</div></div>
+            <div><div class="cs-item-label">The Outcome</div><div class="cs-item-val highlight">${p.outcome}</div></div>
+          </div>
+          <div class="project-stack">${(p.stack||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        </div>
+        <div class="project-links">
+          <a href="${p.liveUrl||'#'}" class="link-btn primary" target="_blank">Live Demo ↗</a>
+          <a href="${p.githubUrl||'#'}" class="link-btn" target="_blank">GitHub →</a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  reObserve();
+}
+
+function renderSkills() {
+  const cats = document.getElementById('skills-cats-container');
+  cats.innerHTML = (data.skills||[]).map((cat, i) => `
+    <div class="skill-cat reveal delay-${i+1}">
+      <div class="skill-cat-title">${cat.title}</div>
+      <div class="skill-list">
+        ${(cat.items||[]).map(item => `
+          <div class="skill-row">
+            <span class="skill-name">${item.name}</span>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="${item.pct}" style="width:0%"></div></div>
+            <span class="skill-pct">${item.pct}%</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  const strip = document.getElementById('tech-strip-inner');
+  const items = [...(data.techStrip||[]), ...(data.techStrip||[])];
+  strip.innerHTML = items.map(t => `<div class="tech-item">${t.iconImg ? `<img src="${t.iconImg}" style="width:20px;height:20px;object-fit:cover;border-radius:4px;">` : `<span>${t.emoji}</span>`} ${t.name}</div>`).join('');
+
+  reObserve();
+  reObserveSkills();
+}
+
+function renderSocial() {
+  const grid = document.getElementById('socials-grid');
+  grid.innerHTML = (data.social||[]).map((s, i) => `
+    <a href="${s.url}" target="_blank" class="social-card reveal delay-${i+1}" style="text-decoration:none;color:inherit;">
+      <div class="sc-icon" style="background:${s.color}22;color:${s.color};font-size:1.5rem;">${s.iconImg ? `<img src="${s.iconImg}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">` : s.icon}</div>
+      <div class="sc-name">${s.platform}</div>
+      <div class="sc-handle">${s.handle}</div>
+      <div class="sc-desc">${s.desc}</div>
+      <div class="sc-follow" style="background:${s.color}22;color:${s.color};">${s.followLabel} →</div>
+    </a>
+  `).join('');
+  reObserve();
+}
+
+function renderContact() {
+  const c = data.contact;
+  document.getElementById('contact-email-btn').href = `mailto:${c.email}`;
+  document.getElementById('contact-whatsapp-btn').href = `https://wa.me/${c.whatsapp}`;
+  document.getElementById('contact-sub').textContent = c.desc;
+}
+
+// ══════════════════════════════════════════════════════
+//  REVIEWS SYSTEM
+// ══════════════════════════════════════════════════════
+function loadReviews() {
+  try { return JSON.parse(localStorage.getItem(REVIEWS_KEY)) || []; } catch(e) { return []; }
+}
+function saveReviews(reviews) { localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews)); }
+function getInitials(name) { return name.trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)||'?'; }
+function renderStars(rating, size=13) { return Array.from({length:5},(_,i)=>`<span style="font-size:${size}px">${i<rating?'⭐':'☆'}</span>`).join(''); }
+function formatDate(iso) { const d=new Date(iso); return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }
+
+function updateSummary(reviews) {
+  const total=reviews.length, avg=total?(reviews.reduce((s,r)=>s+r.rating,0)/total):0;
+  document.getElementById('avgRatingNum').textContent=total?avg.toFixed(1):'0.0';
+  document.getElementById('totalReviewsLabel').textContent=total?`${total} review${total>1?'s':''}`:'No reviews yet';
+  document.getElementById('avgStarsDisplay').innerHTML=Array.from({length:5},(_,i)=>`<span class="star" style="font-size:1.4rem">${i<Math.round(avg)?'⭐':'☆'}</span>`).join('');
+  [1,2,3,4,5].forEach(n=>{
+    const cnt=reviews.filter(r=>r.rating===n).length, pct=total?(cnt/total*100):0;
+    document.getElementById('bar'+n).style.width=pct+'%';
+    document.getElementById('cnt'+n).textContent=cnt;
+  });
+}
+
+const REVIEWS_PER_PAGE = 3;
+let currentReviewPage = 1;
+
+function renderReviewCards(reviews, page) {
+  page = page || currentReviewPage;
+  const list=document.getElementById('reviewsList'), noMsg=document.getElementById('noReviewsMsg');
+  const paginEl = document.getElementById('reviewsPagination');
+  if(!reviews.length){list.innerHTML='';list.appendChild(noMsg);paginEl.innerHTML='';return;}
+  if(noMsg.parentNode)noMsg.remove();
+  const sorted=[...reviews].reverse();
+  const totalPages = Math.ceil(sorted.length / REVIEWS_PER_PAGE);
+  const start = (page-1)*REVIEWS_PER_PAGE, end = start+REVIEWS_PER_PAGE;
+  const pageItems = sorted.slice(start, end);
+  list.innerHTML=pageItems.map(r=>`
+    <div class="review-card">
+      <div class="review-card-header">
+        <div class="review-avatar" style="background:${r.avatarColor}">${r.initials}</div>
+        <div class="review-meta"><div class="review-name">${r.name}</div><div class="review-date">${formatDate(r.date)}</div></div>
+        <div class="review-stars">${renderStars(r.rating)}</div>
+      </div>
+      ${r.text?`<div class="review-text">"${r.text}"</div>`:''}
+      ${r.country?`<div class="review-country">📍 ${r.country}</div>`:''}
+    </div>
+  `).join('');
+  // Pagination buttons
+  if(totalPages <= 1){paginEl.innerHTML='';return;}
+  let btnHtml = `<button class="rev-page-btn" onclick="goReviewPage(${page-1})" ${page===1?'disabled':''}>← Prev</button>`;
+  for(let i=1;i<=totalPages;i++){
+    btnHtml += `<button class="rev-page-btn ${i===page?'active':''}" onclick="goReviewPage(${i})">${i}</button>`;
+  }
+  btnHtml += `<button class="rev-page-btn" onclick="goReviewPage(${page+1})" ${page===totalPages?'disabled':''}>Next →</button>`;
+  paginEl.innerHTML = btnHtml;
+}
+
+function goReviewPage(page) {
+  if(page < 1) return;
+  const allReviews = loadReviews();
+  const sorted = [...allReviews].reverse();
+  const totalPages = Math.ceil(sorted.length / REVIEWS_PER_PAGE);
+  if(page > totalPages) return;
+  currentReviewPage = page;
+  reviews = allReviews;
+  renderReviewCards(reviews, page);
+  const listEl = document.getElementById('reviewsList');
+  if(listEl) listEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+let reviews=loadReviews();
+updateSummary(reviews); renderReviewCards(reviews, 1);
+
+// ── Admin review management ──
+function renderAdminReviews() {
+  const el = document.getElementById('admin-reviews-list');
+  const cntEl = document.getElementById('admin-review-count');
+  if(!el) return;
+  const sorted = [...reviews].reverse();
+  cntEl.textContent = sorted.length;
+  if(!sorted.length) {
+    el.innerHTML = '<div class="admin-no-reviews">কোনো রিভিউ নেই এখনো।</div>';
+    return;
+  }
+  // Map sorted index back to original index for delete/save
+  el.innerHTML = sorted.map((r, si) => {
+    const origIdx = reviews.length - 1 - si;
+    const stars = [1,2,3,4,5].map(n =>
+      `<span class="admin-sp-star ${n<=r.rating?'active':''}" onclick="setAdminReviewStar(${origIdx},${n})">${n<=r.rating?'⭐':'☆'}</span>`
+    ).join('');
+    return `
+    <div class="admin-review-item" id="admin-rev-item-${origIdx}">
+      <div class="admin-review-header">
+        <div class="admin-review-meta">
+          <div class="admin-review-avatar" style="background:${r.avatarColor}">${r.initials}</div>
+          <div class="admin-review-info">
+            <input class="admin-review-name-input" id="ar-name-${origIdx}" value="${r.name.replace(/"/g,'&quot;')}" placeholder="নাম">
+            <div class="admin-review-date">${formatDate(r.date)}</div>
+          </div>
+        </div>
+        <div class="admin-review-actions">
+          <button class="admin-review-save-btn" onclick="saveReviewEdit(${origIdx})">💾 সেভ</button>
+          <button class="admin-review-del-btn" onclick="deleteReview(${origIdx})">🗑 ডিলিট</button>
+        </div>
+      </div>
+      <div class="admin-review-body">
+        <textarea class="admin-review-text-input" id="ar-text-${origIdx}" placeholder="রিভিউ টেক্সট...">${r.text||''}</textarea>
+        <div class="admin-review-row2">
+          <input class="admin-review-country-input" id="ar-country-${origIdx}" value="${r.country||''}" placeholder="দেশ (optional)">
+          <div class="admin-star-picker" id="ar-stars-${origIdx}">${stars}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setAdminReviewStar(origIdx, val) {
+  reviews[origIdx].rating = val;
+  // Update star UI only
+  const picker = document.getElementById('ar-stars-'+origIdx);
+  if(picker) picker.querySelectorAll('.admin-sp-star').forEach((s,i)=>{
+    s.textContent = i<val ? '⭐' : '☆';
+    s.classList.toggle('active', i<val);
+  });
+}
+
+function saveReviewEdit(origIdx) {
+  const nameEl = document.getElementById('ar-name-'+origIdx);
+  const textEl = document.getElementById('ar-text-'+origIdx);
+  const countryEl = document.getElementById('ar-country-'+origIdx);
+  if(!nameEl) return;
+  reviews[origIdx].name = nameEl.value.trim() || reviews[origIdx].name;
+  reviews[origIdx].initials = getInitials(reviews[origIdx].name);
+  reviews[origIdx].text = textEl ? textEl.value.trim() : reviews[origIdx].text;
+  reviews[origIdx].country = countryEl ? countryEl.value.trim() : reviews[origIdx].country;
+  saveReviews(reviews);
+  updateSummary(reviews);
+  renderReviewCards(reviews, currentReviewPage);
+  renderAdminReviews();
+  showAdminToast('রিভিউ আপডেট হয়েছে!');
+}
+
+function deleteReview(origIdx) {
+  if(!confirm('এই রিভিউটি মুছে ফেলবেন?')) return;
+  reviews.splice(origIdx, 1);
+  saveReviews(reviews);
+  updateSummary(reviews);
+  currentReviewPage = 1;
+  renderReviewCards(reviews, 1);
+  renderAdminReviews();
+  showAdminToast('রিভিউ ডিলিট হয়েছে!');
+}
+
+let selectedRating=0;
+
+// ── Admin: Add Review ──
+let newAdminReviewRating = 5;
+
+function setNewReviewStar(val) {
+  newAdminReviewRating = val;
+  const picker = document.getElementById('ar-new-stars');
+  if(picker) picker.querySelectorAll('.admin-sp-star').forEach((s,i) => {
+    s.style.filter = i < val ? 'grayscale(0) opacity(1)' : 'grayscale(1) opacity(0.35)';
+    s.style.transform = i < val ? 'scale(1.1)' : 'scale(1)';
+  });
+}
+
+function addReviewFromAdmin() {
+  const name = document.getElementById('ar-new-name').value.trim();
+  if(!name) { showAdminToast('নাম লিখুন!'); return; }
+  const avatarColors=['linear-gradient(135deg,#7c5cfc,#c850c0)','linear-gradient(135deg,#00d4aa,#0a8a6e)','linear-gradient(135deg,#ff6b9d,#c850c0)','linear-gradient(135deg,#ffb347,#ff6b9d)','linear-gradient(135deg,#7c5cfc,#00d4aa)'];
+  const newReview = {
+    name: name,
+    initials: getInitials(name),
+    country: document.getElementById('ar-new-country').value.trim(),
+    rating: newAdminReviewRating,
+    text: document.getElementById('ar-new-text').value.trim(),
+    date: new Date().toISOString(),
+    avatarColor: avatarColors[Math.floor(Math.random()*avatarColors.length)]
+  };
+  reviews.push(newReview);
+  saveReviews(reviews);
+  updateSummary(reviews);
+  renderReviewCards(reviews, 1);
+  renderAdminReviews();
+  // Reset form
+  document.getElementById('ar-new-name').value = '';
+  document.getElementById('ar-new-country').value = '';
+  document.getElementById('ar-new-text').value = '';
+  newAdminReviewRating = 5;
+  setNewReviewStar(5);
+  showAdminToast('রিভিউ যোগ হয়েছে!');
+}
+const stars=document.querySelectorAll('.sp-star');
+stars.forEach(star=>{
+  star.addEventListener('mouseenter',()=>{const v=+star.dataset.val;stars.forEach(s=>s.classList.toggle('hovered',+s.dataset.val<=v));});
+  star.addEventListener('mouseleave',()=>stars.forEach(s=>s.classList.remove('hovered')));
+  star.addEventListener('click',()=>{selectedRating=+star.dataset.val;stars.forEach(s=>s.classList.toggle('active',+s.dataset.val<=selectedRating));});
+});
+
+document.getElementById('submitReviewBtn').addEventListener('click',()=>{
+  const name=document.getElementById('reviewName').value.trim(),country=document.getElementById('reviewCountry').value.trim(),text=document.getElementById('reviewText').value.trim();
+  if(!name){document.getElementById('reviewName').focus();document.getElementById('reviewName').style.borderColor='var(--pink)';return;}
+  if(!selectedRating){document.querySelector('.star-picker').style.outline='1px solid var(--pink)';setTimeout(()=>document.querySelector('.star-picker').style.outline='',1500);return;}
+  const colors=['linear-gradient(135deg,#7c5cfc,#c850c0)','linear-gradient(135deg,#00d4aa,#7c5cfc)','linear-gradient(135deg,#ff6b9d,#7c5cfc)','linear-gradient(135deg,#ffb347,#ff6b9d)','linear-gradient(135deg,#00d4aa,#c850c0)'];
+  reviews.push({name,country,text,rating:selectedRating,date:new Date().toISOString(),initials:getInitials(name),avatarColor:colors[Math.floor(Math.random()*colors.length)]});
+  saveReviews(reviews); updateSummary(reviews); currentReviewPage=1; renderReviewCards(reviews, 1);
+  document.getElementById('reviewName').value=''; document.getElementById('reviewName').style.borderColor='';
+  document.getElementById('reviewCountry').value=''; document.getElementById('reviewText').value='';
+  selectedRating=0; stars.forEach(s=>s.classList.remove('active','hovered'));
+  showToast('successToast');
+});
+
+// ══════════════════════════════════════════════════════
+//  ADMIN PANEL
+// ══════════════════════════════════════════════════════
+function openAdmin(e) {
+  if(e) e.preventDefault();
+  document.getElementById('admin-panel').classList.add('open');
+  document.getElementById('admin-login-view').style.display = 'block';
+  document.getElementById('admin-main-view').style.display = 'none';
+  document.getElementById('admin-pass-input').value = '';
+  document.getElementById('admin-login-error').style.display = 'none';
+}
+
+function closeAdmin() {
+  document.getElementById('admin-panel').classList.remove('open');
+}
+
+function doAdminLogin() {
+  const pass = document.getElementById('admin-pass-input').value;
+  if(pass === getPass()) {
+    document.getElementById('admin-login-view').style.display = 'none';
+    document.getElementById('admin-main-view').style.display = 'block';
+    populateAdminFields();
+  } else {
+    document.getElementById('admin-login-error').style.display = 'block';
+    document.getElementById('admin-pass-input').value = '';
+  }
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function showToast(id, msg) {
+  if(msg) document.getElementById('adminToastMsg').textContent = msg;
+  const t = document.getElementById(id);
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+function showAdminToast(msg) { showToast('adminToast', msg); }
+
+// Populate admin fields from data
+function populateAdminFields() {
+  const h = data.hero;
+  document.getElementById('a-hero-fname').value = h.fname;
+  document.getElementById('a-hero-lname').value = h.lname;
+  document.getElementById('a-hero-title').value = h.title;
+  document.getElementById('a-hero-badge').value = h.badge;
+  document.getElementById('a-hero-desc').value = h.desc;
+  document.getElementById('a-hero-img-tag').value = h.imgTag;
+  document.getElementById('a-hero-avatar-url').value = h.avatarUrl;
+  document.getElementById('a-nav-logo-url').value = h.navLogoUrl;
+  document.getElementById('a-hero-avatar-w').value = h.avatarW || 340;
+  document.getElementById('a-hero-avatar-h').value = h.avatarH || 420;
+  document.getElementById('a-nav-logo-size').value = h.navLogoSize || 38;
+  document.getElementById('a-intro-logo-size').value = h.introLogoSize || 90;
+  renderHeroStatsAdmin();
+
+  const a = data.about;
+  document.getElementById('a-about-exp').value = a.exp;
+  document.getElementById('a-about-img-url').value = a.imgUrl;
+  document.getElementById('a-about-img-w').value = a.imgW || 260;
+  document.getElementById('a-about-img-h').value = a.imgH || 340;
+  renderAboutParasAdmin();
+  renderAboutValuesAdmin();
+  renderServicesAdmin();
+  renderProjectsAdmin();
+  renderSkillsAdmin();
+  renderTechStripAdmin();
+  renderSocialAdmin();
+
+  const c = data.contact;
+  document.getElementById('a-contact-email').value = c.email;
+  document.getElementById('a-contact-whatsapp').value = c.whatsapp;
+  document.getElementById('a-contact-desc').value = c.desc;
+}
+
+// ── Hero Stats Admin ──
+function renderHeroStatsAdmin() {
+  const el = document.getElementById('hero-stats-admin');
+  el.innerHTML = (data.hero.stats||[]).map((s,i)=>`
+    <div class="admin-row" style="margin-bottom:0.75rem;align-items:center;">
+      <div class="admin-field" style="margin:0"><input type="text" class="admin-input" id="stat-num-${i}" value="${s.num}" placeholder="3+"></div>
+      <div class="admin-field" style="margin:0"><input type="text" class="admin-input" id="stat-label-${i}" value="${s.label}" placeholder="Years Experience"></div>
+      <button class="admin-skill-del" onclick="deleteStat(${i})">🗑</button>
+    </div>
+  `).join('');
+}
+
+function addStat() {
+  data.hero.stats.push({num:'0', label:'New Stat'});
+  renderHeroStatsAdmin();
+}
+
+function deleteStat(i) {
+  data.hero.stats.splice(i,1);
+  renderHeroStatsAdmin();
+}
+
+function saveHero() {
+  data.hero.fname = document.getElementById('a-hero-fname').value;
+  data.hero.lname = document.getElementById('a-hero-lname').value;
+  data.hero.title = document.getElementById('a-hero-title').value;
+  data.hero.badge = document.getElementById('a-hero-badge').value;
+  data.hero.desc = document.getElementById('a-hero-desc').value;
+  data.hero.imgTag = document.getElementById('a-hero-img-tag').value;
+  data.hero.avatarUrl = document.getElementById('a-hero-avatar-url').value;
+  data.hero.navLogoUrl = document.getElementById('a-nav-logo-url').value;
+  const aw = parseInt(document.getElementById('a-hero-avatar-w').value); if(aw) data.hero.avatarW = aw;
+  const ah = parseInt(document.getElementById('a-hero-avatar-h').value); if(ah) data.hero.avatarH = ah;
+  const ns = parseInt(document.getElementById('a-nav-logo-size').value); if(ns) data.hero.navLogoSize = ns;
+  const ils = parseInt(document.getElementById('a-intro-logo-size').value); if(ils) data.hero.introLogoSize = ils;
+  data.hero.stats = data.hero.stats.map((_,i)=>({num:document.getElementById('stat-num-'+i).value,label:document.getElementById('stat-label-'+i).value}));
+  saveData(); renderHero(); showAdminToast('Hero saved!');
+}
+
+// ── About Admin ──
+function renderAboutParasAdmin() {
+  const el = document.getElementById('about-paras-admin');
+  el.innerHTML = (data.about.paras||[]).map((p,i)=>`
+    <div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;">
+      <textarea class="admin-input" id="about-para-${i}" rows="2" style="flex:1">${p}</textarea>
+      <button class="admin-skill-del" onclick="deleteAboutPara(${i})">🗑</button>
+    </div>
+  `).join('');
+}
+
+function addAboutPara() { data.about.paras.push('New paragraph...'); renderAboutParasAdmin(); }
+function deleteAboutPara(i) { data.about.paras.splice(i,1); renderAboutParasAdmin(); }
+
+function renderAboutValuesAdmin() {
+  const el = document.getElementById('about-values-admin');
+  el.innerHTML = (data.about.values||[]).map((v,i)=>`
+    <div class="admin-project-card">
+      <div class="admin-project-header"><span class="admin-project-num">Card ${i+1}</span><button class="admin-danger-btn" onclick="deleteValueCard(${i})">Delete</button></div>
+      <div class="admin-row">
+        <div class="admin-field"><label class="admin-label">Icon (emoji)</label><input type="text" class="admin-input" id="val-icon-${i}" value="${v.icon}"></div>
+        <div class="admin-field"><label class="admin-label">Title</label><input type="text" class="admin-input" id="val-title-${i}" value="${v.title}"></div>
+      </div>
+      <div class="admin-field"><label class="admin-label">Description</label><textarea class="admin-input" id="val-desc-${i}" rows="2">${v.desc}</textarea></div>
+    </div>
+  `).join('');
+}
+
+function addValueCard() { data.about.values.push({icon:'✨', title:'New Value', desc:'Description...'}); renderAboutValuesAdmin(); }
+function deleteValueCard(i) { data.about.values.splice(i,1); renderAboutValuesAdmin(); }
+
+function saveAbout() {
+  data.about.exp = document.getElementById('a-about-exp').value;
+  data.about.imgUrl = document.getElementById('a-about-img-url').value;
+  const aiw = parseInt(document.getElementById('a-about-img-w').value); if(aiw) data.about.imgW = aiw;
+  const aih = parseInt(document.getElementById('a-about-img-h').value); if(aih) data.about.imgH = aih;
+  data.about.paras = data.about.paras.map((_,i)=>document.getElementById('about-para-'+i).value);
+  data.about.values = data.about.values.map((_,i)=>({icon:document.getElementById('val-icon-'+i).value,title:document.getElementById('val-title-'+i).value,desc:document.getElementById('val-desc-'+i).value}));
+  saveData(); renderAbout(); showAdminToast('About saved!');
+}
+
+// ── Services Admin ──
+const bgOptions = ['service-img-bg1','service-img-bg2','service-img-bg3','service-img-bg4'];
+
+function getBgSwatches(fieldPrefix, selectedGrad) {
+  const grads = [
+    { key:'service-img-bg1', label:'Purple→Blue',   css:'linear-gradient(135deg,#1a0f3e,#0f2a3e)' },
+    { key:'service-img-bg2', label:'Green→Blue',    css:'linear-gradient(135deg,#0f2a1a,#0f1a2a)' },
+    { key:'service-img-bg3', label:'Pink→Purple',   css:'linear-gradient(135deg,#2a0f1e,#1a0f2a)' },
+    { key:'service-img-bg4', label:'Amber→Green',   css:'linear-gradient(135deg,#2a1a0f,#1a2a0f)' },
+    { key:'grad-purple-teal',label:'Purple→Teal',   css:'linear-gradient(135deg,#1a0f3e,#0f2a3e,#003d2e)' },
+    { key:'grad-pink-purple',label:'Pink→Purple',   css:'linear-gradient(135deg,#2a0f2e,#1a0f3e,#0f0a2e)' },
+    { key:'grad-teal-blue',  label:'Teal→Blue',     css:'linear-gradient(135deg,#003d2e,#0a1a3e,#050a28)' },
+    { key:'grad-amber-pink', label:'Amber→Pink',    css:'linear-gradient(135deg,#2a1a0a,#2a0f1e,#1a0f2e)' },
+    { key:'grad-blue-cyan',  label:'Blue→Cyan',     css:'linear-gradient(135deg,#050a28,#0a1a3e,#003d3e)' },
+    { key:'grad-green-blue', label:'Green→Blue',    css:'linear-gradient(135deg,#0a2e1a,#0a1a3e,#050a28)' },
+  ];
+  return grads.map(g=>`
+    <div class="grad-swatch-label">
+      <div class="grad-swatch ${g.key===selectedGrad?'selected':''}" 
+           style="background:${g.css};" 
+           title="${g.label}"
+           onclick="selectBgGrad('${fieldPrefix}', '${g.key}', this)"></div>
+      <span style="font-size:9px;color:var(--text3);font-family:var(--font-mono);">${g.label}</span>
+    </div>
+  `).join('');
+}
+
+function getPrjBgSwatches(fieldPrefix, selectedGrad) {
+  const grads = [
+    { key:'project-img-bg1', label:'Deep Purple',   css:'linear-gradient(135deg,#0d0628,#051428)' },
+    { key:'project-img-bg2', label:'Dark Green',    css:'linear-gradient(135deg,#041a12,#040e28)' },
+    { key:'project-img-bg3', label:'Dark Pink',     css:'linear-gradient(135deg,#1a0420,#0a0418)' },
+    { key:'grad-purple-teal',label:'Purple→Teal',   css:'linear-gradient(135deg,#1a0f3e,#0f2a3e,#003d2e)' },
+    { key:'grad-pink-purple',label:'Pink→Purple',   css:'linear-gradient(135deg,#2a0f2e,#1a0f3e,#0f0a2e)' },
+    { key:'grad-teal-blue',  label:'Teal→Blue',     css:'linear-gradient(135deg,#003d2e,#0a1a3e,#050a28)' },
+    { key:'grad-amber-pink', label:'Amber→Pink',    css:'linear-gradient(135deg,#2a1a0a,#2a0f1e,#1a0f2e)' },
+    { key:'grad-blue-cyan',  label:'Blue→Cyan',     css:'linear-gradient(135deg,#050a28,#0a1a3e,#003d3e)' },
+    { key:'grad-green-blue', label:'Green→Blue',    css:'linear-gradient(135deg,#0a2e1a,#0a1a3e,#050a28)' },
+  ];
+  return grads.map(g=>`
+    <div class="grad-swatch-label">
+      <div class="grad-swatch ${g.key===selectedGrad?'selected':''}" 
+           style="background:${g.css};" 
+           title="${g.label}"
+           onclick="selectPrjBgGrad('${fieldPrefix}', '${g.key}', this)"></div>
+      <span style="font-size:9px;color:var(--text3);font-family:var(--font-mono);">${g.label}</span>
+    </div>
+  `).join('');
+}
+
+function selectBgGrad(prefix, gradKey, el) {
+  document.getElementById('svc-bg-val-'+prefix).value = gradKey;
+  el.closest('.grad-picker-wrap').querySelectorAll('.grad-swatch').forEach(s=>s.classList.remove('selected'));
+  el.classList.add('selected');
+  updateSvcBgPreview(prefix);
+}
+
+function selectPrjBgGrad(prefix, gradKey, el) {
+  document.getElementById('prj-bg-val-'+prefix).value = gradKey;
+  el.closest('.grad-picker-wrap').querySelectorAll('.grad-swatch').forEach(s=>s.classList.remove('selected'));
+  el.classList.add('selected');
+  updatePrjBgPreview(prefix);
+}
+
+function updateSvcBgPreview(i) {
+  const bgVal = document.getElementById('svc-bg-val-'+i).value;
+  const bgImgVal = document.getElementById('svc-bgImg-'+i)?.value||'';
+  const preview = document.getElementById('svc-bg-preview-'+i);
+  if(!preview) return;
+  const gradMap = {
+    'service-img-bg1':'linear-gradient(135deg,#1a0f3e,#0f2a3e)',
+    'service-img-bg2':'linear-gradient(135deg,#0f2a1a,#0f1a2a)',
+    'service-img-bg3':'linear-gradient(135deg,#2a0f1e,#1a0f2a)',
+    'service-img-bg4':'linear-gradient(135deg,#2a1a0f,#1a2a0f)',
+    'grad-purple-teal':'linear-gradient(135deg,#1a0f3e,#0f2a3e,#003d2e)',
+    'grad-pink-purple':'linear-gradient(135deg,#2a0f2e,#1a0f3e,#0f0a2e)',
+    'grad-teal-blue':'linear-gradient(135deg,#003d2e,#0a1a3e,#050a28)',
+    'grad-amber-pink':'linear-gradient(135deg,#2a1a0a,#2a0f1e,#1a0f2e)',
+    'grad-blue-cyan':'linear-gradient(135deg,#050a28,#0a1a3e,#003d3e)',
+    'grad-green-blue':'linear-gradient(135deg,#0a2e1a,#0a1a3e,#050a28)'
+  };
+  if(bgImgVal) {
+    preview.style.backgroundImage = `linear-gradient(to bottom, rgba(6,6,16,0.3), rgba(6,6,16,0.7)), url(${bgImgVal})`;
+  } else {
+    preview.style.backgroundImage = gradMap[bgVal]||gradMap['service-img-bg1'];
+  }
+}
+
+function updatePrjBgPreview(i) {
+  const bgVal = document.getElementById('prj-bg-val-'+i).value;
+  const bgImgVal = document.getElementById('prj-bgImg-'+i)?.value||'';
+  const preview = document.getElementById('prj-bg-preview-'+i);
+  if(!preview) return;
+  const gradMap = {
+    'project-img-bg1':'linear-gradient(135deg,#0d0628,#051428)',
+    'project-img-bg2':'linear-gradient(135deg,#041a12,#040e28)',
+    'project-img-bg3':'linear-gradient(135deg,#1a0420,#0a0418)',
+    'grad-purple-teal':'linear-gradient(135deg,#1a0f3e,#0f2a3e,#003d2e)',
+    'grad-pink-purple':'linear-gradient(135deg,#2a0f2e,#1a0f3e,#0f0a2e)',
+    'grad-teal-blue':'linear-gradient(135deg,#003d2e,#0a1a3e,#050a28)',
+    'grad-amber-pink':'linear-gradient(135deg,#2a1a0a,#2a0f1e,#1a0f2e)',
+    'grad-blue-cyan':'linear-gradient(135deg,#050a28,#0a1a3e,#003d3e)',
+    'grad-green-blue':'linear-gradient(135deg,#0a2e1a,#0a1a3e,#050a28)'
+  };
+  if(bgImgVal) {
+    preview.style.backgroundImage = `linear-gradient(to bottom, rgba(6,6,16,0.3), rgba(6,6,16,0.75)), url(${bgImgVal})`;
+  } else {
+    preview.style.backgroundImage = gradMap[bgVal]||gradMap['project-img-bg1'];
+  }
+}
+
+function renderServicesAdmin() {
+  const el = document.getElementById('services-admin');
+  el.innerHTML = (data.services||[]).map((s,i)=>`
+    <div class="admin-project-card">
+      <div class="admin-project-header"><span class="admin-project-num">Service ${i+1}</span><button class="admin-danger-btn" onclick="deleteService(${i})">Delete</button></div>
+      <div class="admin-row">
+        <div class="admin-field"><label class="admin-label">Title</label><input type="text" class="admin-input" id="svc-title-${i}" value="${s.title}"></div>
+        <div class="admin-field"><label class="admin-label">Emoji / Icon</label><input type="text" class="admin-input" id="svc-emoji-${i}" value="${s.emoji}" style="width:80px"></div>
+      </div>
+      <div class="admin-field"><label class="admin-label">Description</label><textarea class="admin-input" id="svc-desc-${i}" rows="2">${s.desc}</textarea></div>
+      <div class="admin-field"><label class="admin-label">Tags (comma separated)</label><input type="text" class="admin-input" id="svc-tags-${i}" value="${(s.tags||[]).join(', ')}"></div>
+      <div class="admin-field">
+        <label class="admin-label">🎨 ব্যাকগ্রাউন্ড — গ্র্যাডিয়েন্ট বেছে নিন</label>
+        <input type="hidden" id="svc-bg-val-${i}" value="${s.bg||'service-img-bg1'}">
+        <div class="grad-picker-wrap" id="svc-grad-picker-${i}">${getBgSwatches(i, s.bg||'service-img-bg1')}</div>
+      </div>
+      <div class="admin-field">
+        <label class="admin-label">অথবা ব্যাকগ্রাউন্ড ছবি আপলোড করুন (গ্র্যাডিয়েন্ট শেডো সহ)</label>
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+          <label class="admin-img-upload-btn" for="svc-bg-file-${i}">📁 ছবি আপলোড</label>
+          <input type="file" class="admin-file-input" id="svc-bg-file-${i}" accept="image/*" onchange="handleBgImgUpload(this, ${i}, 'svc')">
+          <input type="hidden" id="svc-bgImg-${i}" value="${s.bgImg||''}">
+          ${s.bgImg ? `<button onclick="clearBgImg(${i},'svc')" style="background:none;border:none;color:var(--pink);cursor:pointer;font-size:12px;font-family:var(--font-mono);">✕ ছবি সরান</button>` : ''}
+        </div>
+        <div class="bg-img-preview-strip" id="svc-bg-preview-${i}" style="background-image:${s.bgImg ? `linear-gradient(to bottom,rgba(6,6,16,0.3),rgba(6,6,16,0.7)),url(${s.bgImg})` : getBgCss(s.bg||'service-img-bg1')}">
+          <span style="z-index:1;position:relative;font-size:1.6rem">${s.emoji}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addService() { data.services.push({title:'New Service', desc:'Service description...', tags:['Tag1'], bg:'service-img-bg1', emoji:'🔧'}); renderServicesAdmin(); }
+function deleteService(i) { data.services.splice(i,1); renderServicesAdmin(); }
+
+function saveServices() {
+  data.services = data.services.map((_,i)=>({
+    title: document.getElementById('svc-title-'+i).value,
+    emoji: document.getElementById('svc-emoji-'+i).value,
+    desc: document.getElementById('svc-desc-'+i).value,
+    tags: document.getElementById('svc-tags-'+i).value.split(',').map(t=>t.trim()).filter(Boolean),
+    bg: document.getElementById('svc-bg-val-'+i)?.value || data.services[i].bg || 'service-img-bg1',
+    bgImg: document.getElementById('svc-bgImg-'+i)?.value || ''
+  }));
+  saveData(); renderServices(); showAdminToast('Services saved!');
+}
+
+// ── Projects Admin ──
+function renderProjectsAdmin() {
+  const el = document.getElementById('projects-admin');
+  el.innerHTML = (data.projects||[]).map((p,i)=>`
+    <div class="admin-project-card">
+      <div class="admin-project-header"><span class="admin-project-num">Project ${i+1}: ${p.title}</span><button class="admin-danger-btn" onclick="deleteProject(${i})">Delete</button></div>
+      <div class="admin-row">
+        <div class="admin-field"><label class="admin-label">Number</label><input type="text" class="admin-input" id="prj-num-${i}" value="${p.num}"></div>
+        <div class="admin-field"><label class="admin-label">Type</label><input type="text" class="admin-input" id="prj-type-${i}" value="${p.type}"></div>
+      </div>
+      <div class="admin-row">
+        <div class="admin-field"><label class="admin-label">Title</label><input type="text" class="admin-input" id="prj-title-${i}" value="${p.title}"></div>
+        <div class="admin-field"><label class="admin-label">Emoji</label><input type="text" class="admin-input" id="prj-emoji-${i}" value="${p.emoji}"></div>
+      </div>
+      <div class="admin-field"><label class="admin-label">Description</label><textarea class="admin-input" id="prj-desc-${i}" rows="2">${p.desc}</textarea></div>
+      <div class="admin-field"><label class="admin-label">Challenge</label><textarea class="admin-input" id="prj-challenge-${i}" rows="2">${p.challenge}</textarea></div>
+      <div class="admin-field"><label class="admin-label">Solution</label><textarea class="admin-input" id="prj-solution-${i}" rows="2">${p.solution}</textarea></div>
+      <div class="admin-field"><label class="admin-label">Outcome</label><input type="text" class="admin-input" id="prj-outcome-${i}" value="${p.outcome}"></div>
+      <div class="admin-field"><label class="admin-label">Tech Stack (comma separated)</label><input type="text" class="admin-input" id="prj-stack-${i}" value="${(p.stack||[]).join(', ')}"></div>
+      <div class="admin-row">
+        <div class="admin-field"><label class="admin-label">Live URL</label><input type="text" class="admin-input" id="prj-live-${i}" value="${p.liveUrl||'#'}"></div>
+        <div class="admin-field"><label class="admin-label">GitHub URL</label><input type="text" class="admin-input" id="prj-github-${i}" value="${p.githubUrl||'#'}"></div>
+      </div>
+      <div class="admin-field">
+        <label class="admin-label">🎨 ব্যাকগ্রাউন্ড — গ্র্যাডিয়েন্ট বেছে নিন</label>
+        <input type="hidden" id="prj-bg-val-${i}" value="${p.bg||'project-img-bg1'}">
+        <div class="grad-picker-wrap">${getPrjBgSwatches(i, p.bg||'project-img-bg1')}</div>
+      </div>
+      <div class="admin-field">
+        <label class="admin-label">অথবা ব্যাকগ্রাউন্ড ছবি আপলোড করুন (গ্র্যাডিয়েন্ট শেডো সহ)</label>
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+          <label class="admin-img-upload-btn" for="prj-bg-file-${i}">📁 ছবি আপলোড</label>
+          <input type="file" class="admin-file-input" id="prj-bg-file-${i}" accept="image/*" onchange="handleBgImgUpload(this, ${i}, 'prj')">
+          <input type="hidden" id="prj-bgImg-${i}" value="${p.bgImg||''}">
+          ${p.bgImg ? `<button onclick="clearBgImg(${i},'prj')" style="background:none;border:none;color:var(--pink);cursor:pointer;font-size:12px;font-family:var(--font-mono);">✕ ছবি সরান</button>` : ''}
+        </div>
+        <div class="bg-img-preview-strip" id="prj-bg-preview-${i}" style="background-image:${p.bgImg ? `linear-gradient(to bottom,rgba(6,6,16,0.3),rgba(6,6,16,0.75)),url(${p.bgImg})` : getPrjBgCss(p.bg||'project-img-bg1')}">
+          <span style="z-index:1;position:relative;font-size:1.6rem">${p.emoji}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+const prjBgs = ['project-img-bg1','project-img-bg2','project-img-bg3','project-img-bg4'];
+function addProject() { data.projects.push({num:`0${data.projects.length+1}`,type:'New Type',title:'New Project',desc:'Description...',challenge:'Challenge...',solution:'Solution...',outcome:'Outcome...',stack:['Tech1'],liveUrl:'#',githubUrl:'#',emoji:'💡',bg:'project-img-bg1'}); renderProjectsAdmin(); }
+function deleteProject(i) { data.projects.splice(i,1); renderProjectsAdmin(); }
+
+function saveProjects() {
+  data.projects = data.projects.map((_,i)=>({
+    num: document.getElementById('prj-num-'+i).value,
+    type: document.getElementById('prj-type-'+i).value,
+    title: document.getElementById('prj-title-'+i).value,
+    emoji: document.getElementById('prj-emoji-'+i).value,
+    desc: document.getElementById('prj-desc-'+i).value,
+    challenge: document.getElementById('prj-challenge-'+i).value,
+    solution: document.getElementById('prj-solution-'+i).value,
+    outcome: document.getElementById('prj-outcome-'+i).value,
+    stack: document.getElementById('prj-stack-'+i).value.split(',').map(t=>t.trim()).filter(Boolean),
+    liveUrl: document.getElementById('prj-live-'+i).value,
+    githubUrl: document.getElementById('prj-github-'+i).value,
+    bg: document.getElementById('prj-bg-val-'+i)?.value || data.projects[i].bg || 'project-img-bg1',
+    bgImg: document.getElementById('prj-bgImg-'+i)?.value || ''
+  }));
+  saveData(); renderProjects(); showAdminToast('Projects saved!');
+}
+
+// ── Skills Admin ──
+function renderSkillsAdmin() {
+  const el = document.getElementById('skills-admin');
+  el.innerHTML = (data.skills||[]).map((cat,ci)=>`
+    <div class="admin-project-card">
+      <div class="admin-project-header">
+        <input type="text" class="admin-input" id="skill-cat-${ci}" value="${cat.title}" style="font-weight:700;font-size:14px;border:none;background:transparent;padding:0;color:var(--text);">
+        <button class="admin-danger-btn" onclick="deleteSkillCat(${ci})">Delete</button>
+      </div>
+      <div id="skill-items-${ci}">
+        ${(cat.items||[]).map((item,ii)=>`
+          <div class="admin-skill-row">
+            <input type="text" class="admin-input admin-skill-name-input" id="ski-name-${ci}-${ii}" value="${item.name}" placeholder="Skill name">
+            <input type="number" class="admin-input admin-skill-pct-input" id="ski-pct-${ci}-${ii}" value="${item.pct}" min="0" max="100" placeholder="%">
+            <button class="admin-skill-del" onclick="deleteSkillItem(${ci},${ii})">🗑</button>
+          </div>
+        `).join('')}
+      </div>
+      <button class="admin-add-btn" onclick="addSkillItem(${ci})" style="margin-top:0.5rem">+ Add Skill</button>
+    </div>
+  `).join('');
+}
+
+function addSkillCat() { data.skills.push({title:'New Category', items:[{name:'New Skill', pct:80}]}); renderSkillsAdmin(); }
+function deleteSkillCat(ci) { data.skills.splice(ci,1); renderSkillsAdmin(); }
+function addSkillItem(ci) { data.skills[ci].items.push({name:'New Skill', pct:80}); renderSkillsAdmin(); }
+function deleteSkillItem(ci,ii) { data.skills[ci].items.splice(ii,1); renderSkillsAdmin(); }
+
+function renderTechStripAdmin() {
+  const el = document.getElementById('tech-strip-admin');
+  el.innerHTML = (data.techStrip||[]).map((t,i)=>`
+    <div class="admin-skill-row">
+      <div class="admin-img-preview" id="tech-icon-preview-${i}" style="font-size:1.2rem;">${t.iconImg ? `<img src="${t.iconImg}" style="width:100%;height:100%;object-fit:cover;">` : t.emoji}</div>
+      <input type="text" class="admin-input" id="tech-emoji-${i}" value="${t.emoji}" style="width:60px;flex:0 0 60px">
+      <label class="admin-img-upload-btn" for="tech-img-file-${i}">📁</label>
+      <input type="file" class="admin-file-input" id="tech-img-file-${i}" accept="image/*" onchange="handleIconUpload(this, 'tech-icon-preview-${i}', 'tech-iconImg-${i}')">
+      <input type="hidden" id="tech-iconImg-${i}" value="${t.iconImg||''}">
+      <input type="text" class="admin-input" id="tech-name-${i}" value="${t.name}">
+      <button class="admin-skill-del" onclick="deleteTechItem(${i})">🗑</button>
+    </div>
+  `).join('');
+}
+
+function addTechItem() { data.techStrip.push({emoji:'⚙️', name:'New Tech'}); renderTechStripAdmin(); }
+function deleteTechItem(i) { data.techStrip.splice(i,1); renderTechStripAdmin(); }
+
+function saveSkills() {
+  data.skills = data.skills.map((cat,ci)=>({
+    title: document.getElementById('skill-cat-'+ci).value,
+    items: cat.items.map((_,ii)=>({
+      name: document.getElementById(`ski-name-${ci}-${ii}`).value,
+      pct: parseInt(document.getElementById(`ski-pct-${ci}-${ii}`).value)||0
+    }))
+  }));
+  data.techStrip = data.techStrip.map((_,i)=>({
+    emoji: document.getElementById('tech-emoji-'+i).value,
+    iconImg: document.getElementById('tech-iconImg-'+i)?.value||'',
+    name: document.getElementById('tech-name-'+i).value
+  }));
+  saveData(); renderSkills(); showAdminToast('Skills saved!');
+}
+
+// ── Social Admin ──
+function renderSocialAdmin() {
+  const el = document.getElementById('social-admin');
+  el.innerHTML = (data.social||[]).map((s,i)=>`
+    <div class="admin-project-card">
+      <div class="admin-project-header"><span class="admin-project-num">${s.platform}</span><button class="admin-danger-btn" onclick="deleteSocialLink(${i})">Delete</button></div>
+      <div class="admin-row">
+        <div class="admin-field"><label class="admin-label">Platform</label><input type="text" class="admin-input" id="soc-platform-${i}" value="${s.platform}"></div>
+        <div class="admin-field"><label class="admin-label">Handle</label><input type="text" class="admin-input" id="soc-handle-${i}" value="${s.handle}"></div>
+      </div>
+      <div class="admin-row">
+        <div class="admin-field">
+          <label class="admin-label">Icon (Emoji বা ছবি)</label>
+          <div class="admin-img-upload-wrap">
+            <div class="admin-img-preview" id="soc-icon-preview-${i}">${s.iconImg ? `<img src="${s.iconImg}" style="width:100%;height:100%;object-fit:cover;">` : s.icon}</div>
+            <input type="text" class="admin-input" id="soc-icon-${i}" value="${s.icon}" placeholder="Emoji" style="width:70px;">
+            <label class="admin-img-upload-btn" for="soc-img-file-${i}">📁 ছবি</label>
+            <input type="file" class="admin-file-input" id="soc-img-file-${i}" accept="image/*" onchange="handleIconUpload(this, 'soc-icon-preview-${i}', 'soc-iconImg-${i}')">
+            <input type="hidden" id="soc-iconImg-${i}" value="${s.iconImg||''}">
+          </div>
+        </div>
+        <div class="admin-field"><label class="admin-label">Color (hex)</label><input type="text" class="admin-input" id="soc-color-${i}" value="${s.color}"></div>
+      </div>
+      <div class="admin-field"><label class="admin-label">URL</label><input type="text" class="admin-input" id="soc-url-${i}" value="${s.url}"></div>
+      <div class="admin-field"><label class="admin-label">Description</label><input type="text" class="admin-input" id="soc-desc-${i}" value="${s.desc}"></div>
+      <div class="admin-field"><label class="admin-label">Follow Button Label</label><input type="text" class="admin-input" id="soc-follow-${i}" value="${s.followLabel}"></div>
+    </div>
+  `).join('');
+}
+
+function addSocialLink() { data.social.push({platform:'New Platform', handle:'@handle', url:'#', icon:'🔗', color:'#7c5cfc', desc:'Description...', followLabel:'Follow'}); renderSocialAdmin(); }
+function deleteSocialLink(i) { data.social.splice(i,1); renderSocialAdmin(); }
+
+function saveSocial() {
+  data.social = data.social.map((_,i)=>({
+    platform: document.getElementById('soc-platform-'+i).value,
+    handle: document.getElementById('soc-handle-'+i).value,
+    icon: document.getElementById('soc-icon-'+i).value,
+    iconImg: document.getElementById('soc-iconImg-'+i)?.value||'',
+    color: document.getElementById('soc-color-'+i).value,
+    url: document.getElementById('soc-url-'+i).value,
+    desc: document.getElementById('soc-desc-'+i).value,
+    followLabel: document.getElementById('soc-follow-'+i).value
+  }));
+  saveData(); renderSocial(); renderHero(); showAdminToast('Social saved!');
+}
+
+// ── Contact ──
+function saveContact() {
+  data.contact.email = document.getElementById('a-contact-email').value;
+  data.contact.whatsapp = document.getElementById('a-contact-whatsapp').value;
+  data.contact.desc = document.getElementById('a-contact-desc').value;
+  saveData(); renderContact(); showAdminToast('Contact saved!');
+}
+
+// ── Settings ──
+function changePassword() {
+  const np = document.getElementById('a-new-pass').value;
+  const cp = document.getElementById('a-confirm-pass').value;
+  if(!np) { showAdminToast('Please enter a new password'); return; }
+  if(np !== cp) { showAdminToast('Passwords do not match'); return; }
+  localStorage.setItem(PASS_KEY, np);
+  document.getElementById('a-new-pass').value=''; document.getElementById('a-confirm-pass').value='';
+  showAdminToast('Password changed!');
+}
+
+// ── Background CSS helpers ──
+const BG_GRAD_MAP = {
+  'service-img-bg1':'linear-gradient(135deg,#1a0f3e,#0f2a3e)',
+  'service-img-bg2':'linear-gradient(135deg,#0f2a1a,#0f1a2a)',
+  'service-img-bg3':'linear-gradient(135deg,#2a0f1e,#1a0f2a)',
+  'service-img-bg4':'linear-gradient(135deg,#2a1a0f,#1a2a0f)',
+  'grad-purple-teal':'linear-gradient(135deg,#1a0f3e,#0f2a3e,#003d2e)',
+  'grad-pink-purple':'linear-gradient(135deg,#2a0f2e,#1a0f3e,#0f0a2e)',
+  'grad-teal-blue':'linear-gradient(135deg,#003d2e,#0a1a3e,#050a28)',
+  'grad-amber-pink':'linear-gradient(135deg,#2a1a0a,#2a0f1e,#1a0f2e)',
+  'grad-blue-cyan':'linear-gradient(135deg,#050a28,#0a1a3e,#003d3e)',
+  'grad-green-blue':'linear-gradient(135deg,#0a2e1a,#0a1a3e,#050a28)'
+};
+const PRJ_GRAD_MAP = {
+  'project-img-bg1':'linear-gradient(135deg,#0d0628,#051428)',
+  'project-img-bg2':'linear-gradient(135deg,#041a12,#040e28)',
+  'project-img-bg3':'linear-gradient(135deg,#1a0420,#0a0418)',
+  'grad-purple-teal':'linear-gradient(135deg,#1a0f3e,#0f2a3e,#003d2e)',
+  'grad-pink-purple':'linear-gradient(135deg,#2a0f2e,#1a0f3e,#0f0a2e)',
+  'grad-teal-blue':'linear-gradient(135deg,#003d2e,#0a1a3e,#050a28)',
+  'grad-amber-pink':'linear-gradient(135deg,#2a1a0a,#2a0f1e,#1a0f2e)',
+  'grad-blue-cyan':'linear-gradient(135deg,#050a28,#0a1a3e,#003d3e)',
+  'grad-green-blue':'linear-gradient(135deg,#0a2e1a,#0a1a3e,#050a28)'
+};
+function getBgCss(key) { return BG_GRAD_MAP[key]||BG_GRAD_MAP['service-img-bg1']; }
+function getPrjBgCss(key) { return PRJ_GRAD_MAP[key]||PRJ_GRAD_MAP['project-img-bg1']; }
+
+function handleBgImgUpload(input, idx, prefix) {
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result;
+    document.getElementById(prefix+'-bgImg-'+idx).value = base64;
+    const preview = document.getElementById(prefix+'-bg-preview-'+idx);
+    if(preview) preview.style.backgroundImage = `linear-gradient(to bottom,rgba(6,6,16,0.3),rgba(6,6,16,0.75)),url(${base64})`;
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearBgImg(idx, prefix) {
+  document.getElementById(prefix+'-bgImg-'+idx).value = '';
+  const bgVal = document.getElementById(prefix+'-bg-val-'+idx)?.value;
+  const preview = document.getElementById(prefix+'-bg-preview-'+idx);
+  if(preview) preview.style.backgroundImage = prefix==='svc' ? getBgCss(bgVal) : getPrjBgCss(bgVal);
+  if(prefix==='svc') renderServicesAdmin(); else renderProjectsAdmin();
+}
+
+function resetAllData() {
+  if(!confirm('Reset all portfolio data to defaults? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  data = getDefaultData();
+  saveData(); renderAll(); populateAdminFields();
+  showAdminToast('Data reset to defaults!');
+}
+
+// ── Image Upload Handler ──
+function handleIconUpload(input, previewId, hiddenId) {
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result;
+    const previewEl = document.getElementById(previewId);
+    const hiddenEl = document.getElementById(hiddenId);
+    if(previewEl) previewEl.innerHTML = `<img src="${base64}" style="width:100%;height:100%;object-fit:cover;border-radius:6px;">`;
+    if(hiddenEl) hiddenEl.value = base64;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ══════════════════════════════════════════════════════
+//  INTERSECTION OBSERVERS
+// ══════════════════════════════════════════════════════
+let revealObserver, skillObserver;
+
+function reObserve() {
+  if(revealObserver) {
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el=>{
+      el.classList.remove('visible');
+      revealObserver.observe(el);
+    });
+  }
+}
+
+function reObserveSkills() {
+  if(skillObserver) {
+    document.querySelectorAll('.skill-cat').forEach(el=>skillObserver.observe(el));
+  }
+}
+
+function initObservers() {
+  revealObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); else e.target.classList.remove('visible'); });
+  }, {threshold:0.1});
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el=>revealObserver.observe(el));
+
+  skillObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.querySelectorAll('.skill-bar-fill').forEach(b=>b.style.width=b.dataset.width+'%');
+      else e.target.querySelectorAll('.skill-bar-fill').forEach(b=>b.style.width='0%');
+    });
+  }, {threshold:0.3});
+
+  document.querySelectorAll('.skill-cat').forEach(el=>skillObserver.observe(el));
+}
+
+// ══════════════════════════════════════════════════════
+//  CUSTOM CURSOR
+// ══════════════════════════════════════════════════════
+const cursorEl = document.getElementById('cursor');
+const trailEl = document.getElementById('cursorTrail');
+let mouseX = -100, mouseY = -100;
+let trailX = -100, trailY = -100;
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursorEl.style.left = mouseX+'px'; cursorEl.style.top = mouseY+'px';
+});
+(function animTrail(){
+  trailX += (mouseX - trailX) * 0.18;
+  trailY += (mouseY - trailY) * 0.18;
+  trailEl.style.left = trailX+'px'; trailEl.style.top = trailY+'px';
+  requestAnimationFrame(animTrail);
+})();
+document.addEventListener('mouseleave', () => { cursorEl.style.opacity='0'; trailEl.style.opacity='0'; });
+document.addEventListener('mouseenter', () => { cursorEl.style.opacity='1'; trailEl.style.opacity='1'; });
+
+// ══════════════════════════════════════════════════════
+//  PARTICLES
+// ══════════════════════════════════════════════════════
+const particleColors=['rgba(124,92,252,','rgba(0,212,170,','rgba(200,80,192,','rgba(255,107,157,'];
+function spawnParticles() {
+  const container = document.getElementById('particles');
+  for(let i=0;i<30;i++){
+    const p = document.createElement('div'); p.classList.add('particle');
+    const size=Math.random()*4+2, color=particleColors[Math.floor(Math.random()*particleColors.length)];
+    p.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${color}${Math.random()*0.6+0.2});animation-duration:${Math.random()*15+10}s;animation-delay:${Math.random()*10}s;`;
+    container.appendChild(p);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  NAV SCROLL + HAMBURGER + TILT
+// ══════════════════════════════════════════════════════
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('nav-links').classList.toggle('open'));
+
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  navbar.style.background = window.scrollY>80 ? 'rgba(6,6,16,0.92)' : 'rgba(6,6,16,0.75)';
+  navbar.style.boxShadow = window.scrollY>80 ? '0 4px 30px rgba(0,0,0,0.4)' : 'none';
+  let current='';
+  document.querySelectorAll('section[id]').forEach(s=>{ if(window.scrollY>=s.offsetTop-120) current=s.id; });
+  document.querySelectorAll('.nav-links a').forEach(a=>{ a.style.color = a.getAttribute('href')==='#'+current ? 'var(--text)' : ''; });
+});
+
+document.querySelectorAll('.project-card, .service-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect(),x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;
+    card.style.transform=`perspective(1000px) rotateX(${(y/r.height)*6}deg) rotateY(${-(x/r.width)*6}deg) translateY(-4px)`;
+  });
+  card.addEventListener('mouseleave',()=>card.style.transform='');
+});
+
+// ══════════════════════════════════════════════════════
+//  INTRO ANIMATION
+// ══════════════════════════════════════════════════════
+function startIntro() {
+  const pct = document.getElementById('intro-pct');
+  let val = 0;
+  const iv = setInterval(()=>{
+    val = Math.min(100, val + Math.floor(Math.random()*12+1));
+    pct.textContent = val + '%';
+    if(val>=100) {
+      clearInterval(iv);
+      setTimeout(()=>{
+        const intro = document.getElementById('intro-screen');
+        intro.classList.add('done');
+        setTimeout(()=>{ intro.style.display='none'; }, 900);
+      }, 300);
+    }
+  }, 120);
+}
+
+// ══════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════
+loadData();
+renderAll();
+spawnParticles();
+initObservers();
+startIntro();
+
+// Service card tilt re-init after render
+setTimeout(()=>{
+  document.querySelectorAll('.project-card, .service-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect(),x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;
+      card.style.transform=`perspective(1000px) rotateX(${(y/r.height)*6}deg) rotateY(${-(x/r.width)*6}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave',()=>card.style.transform='');
+  });
+}, 500);
+</script>
 </body>
 </html>
